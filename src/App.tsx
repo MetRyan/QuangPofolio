@@ -5,7 +5,7 @@
 
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "motion/react";
 import React, { useEffect, useRef, useState } from "react";
-import { ChevronRight, ExternalLink, Mail, MapPin } from "lucide-react";
+import { ChevronLeft, ChevronRight, ExternalLink, Mail, MapPin } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import ProjectDetailsPage from "./ProjectDetails";
@@ -23,6 +23,410 @@ interface Project {
 }
 
 // --- Components ---
+
+const VoyagerGallery = () => {
+  const defaultImages = [
+    "/assets/projects/finland/6.jpg",
+    "/assets/projects/techfest2024/9.jpg",
+    "/assets/projects/startup_trip/7.jpg",
+    "/assets/projects/awakened_leaders/5.jpg",
+    "/assets/projects/vietnam_market/2.jpg",
+    "/assets/projects/greenbio/3.jpg",
+    "/assets/projects/innovation_challenge/8.jpg",
+    "/assets/projects/sitecatcher/2.jpg",
+    "/assets/projects/finland/3.jpg",
+    "/assets/projects/techfest2024/5.jpg",
+    "/assets/projects/startup_trip/3.jpg",
+    "/assets/projects/awakened_leaders/2.jpg",
+  ];
+
+  // Thêm ảnh: đặt tên theo số thứ tự tiếp theo vào folder curated_moments (tối đa 40)
+  const allImages = Array.from({ length: 40 }, (_, i) => `/assets/projects/curated_moments/${i + 1}.jpg`);
+  const [errorSet, setErrorSet] = useState<Set<number>>(new Set());
+  const images = allImages.filter((_, i) => !errorSet.has(i));
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const [step, setStep] = useState(300);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setStep(window.innerWidth < 768 ? 150 : 300);
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  useEffect(() => {
+    if (isHovered) return;
+    const interval = setInterval(() => {
+      handleNext();
+    }, 4500);
+    return () => clearInterval(interval);
+  }, [isHovered]);
+
+  return (
+    <section 
+      className="py-24 bg-black/40 border-t border-white/5 relative overflow-hidden"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <div className="max-w-7xl mx-auto px-6 mb-12 flex justify-between items-end">
+        <div className="space-y-2 text-left">
+          <span className="text-xs font-mono uppercase tracking-[0.3em] text-white/30">Curated Moments</span>
+          <h3 className="font-display text-2xl md:text-4xl text-white">Khoảnh khắc Đồng hành</h3>
+        </div>
+        <div className="flex gap-3">
+          <button 
+            onClick={handlePrev}
+            className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-white/30 text-white transition-all cursor-pointer"
+            aria-label="Previous image"
+          >
+            <ChevronLeft size={18} />
+          </button>
+          <button 
+            onClick={handleNext}
+            className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-white/30 text-white transition-all cursor-pointer"
+            aria-label="Next image"
+          >
+            <ChevronRight size={18} />
+          </button>
+        </div>
+      </div>
+
+      {/* 3D Perspective Card Container */}
+      <div className="relative h-[480px] md:h-[560px] w-full flex items-center justify-center overflow-hidden" style={{ perspective: "1200px" }}>
+        <div className="relative w-full max-w-[280px] md:max-w-[340px] h-[380px] md:h-[460px] flex items-center justify-center">
+          {images.map((imgUrl, idx) => {
+            let offset = idx - activeIndex;
+            const halfLength = images.length / 2;
+            
+            if (offset > halfLength) offset -= images.length;
+            if (offset < -halfLength) offset += images.length;
+
+            const isCenter = offset === 0;
+            const isVisible = Math.abs(offset) <= 3;
+
+            if (!isVisible) return null;
+
+            // Compute 3D values based on offset distance to look majestic and fanned out beautifully
+            const rotateY = offset * -18;
+            const translateZ = Math.abs(offset) * -120;
+            const translateX = offset * step;
+            const scale = 1 - Math.abs(offset) * 0.12;
+            const opacity = 1 - Math.abs(offset) * 0.22;
+            const zIndex = 10 - Math.abs(offset);
+
+            return (
+              <motion.div
+                key={idx}
+                style={{
+                  transformStyle: "preserve-3d",
+                }}
+                animate={{
+                  x: translateX,
+                  scale: scale,
+                  rotateY: rotateY,
+                  z: translateZ,
+                  opacity: opacity,
+                  zIndex: zIndex,
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 120,
+                  damping: 18,
+                }}
+                onClick={() => {
+                  if (!isCenter) setActiveIndex(idx);
+                }}
+                className={cn(
+                  "absolute inset-0 w-full h-full rounded-[2.5rem] overflow-hidden border border-white/10 cursor-pointer shadow-2xl transition-all duration-300",
+                  isCenter ? "shadow-white/[0.05]" : "hover:border-white/20"
+                )}
+              >
+                <img
+                  src={imgUrl}
+                  alt={`Highlight moment ${idx + 1}`}
+                  className="w-full h-full object-cover select-none pointer-events-none"
+                  referrerPolicy="no-referrer"
+                  onError={() => {
+                    setErrorSet(prev => new Set(prev).add(allImages.indexOf(imgUrl)));
+                  }}
+                />
+                <div className={cn(
+                  "absolute inset-0 transition-opacity duration-500",
+                  isCenter 
+                    ? "bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-100" 
+                    : "bg-black/50 hover:bg-black/40 opacity-100"
+                )} />
+              </motion.div>
+            );
+          })}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+const AwakenedLeadersCard = ({ imgUrl, idx, rot, yOff }: { imgUrl: string; idx: number; rot: number; yOff: number }) => {
+  const [hidden, setHidden] = useState(false);
+  if (hidden) return null;
+  return (
+    <motion.div
+      className="flex-shrink-0 w-[190px] md:w-[280px] h-[260px] md:h-[400px] rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.75)] snap-center bg-zinc-950 relative cursor-pointer"
+      animate={{ rotate: rot, y: yOff }}
+      whileHover={{ scale: 1.05, rotate: 0, y: yOff - 15, borderColor: "rgba(255,255,255,0.3)", zIndex: 30 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+    >
+      <img
+        src={imgUrl}
+        alt={`Awakened Leaders ${idx + 1}`}
+        className="w-full h-full object-cover select-none pointer-events-none opacity-85 hover:opacity-100 transition-opacity duration-300"
+        referrerPolicy="no-referrer"
+        onError={() => setHidden(true)}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+    </motion.div>
+  );
+};
+
+const AwakenedLeadersGallery = () => {
+  // Thêm ảnh: đặt tên theo số thứ tự tiếp theo vào folder awakened_leaders (tối đa 20)
+  // Thêm ảnh: đặt tên theo số thứ tự tiếp theo vào folder awakened_leaders (tối đa 20)
+  const images = Array.from({ length: 20 }, (_, i) => `/assets/projects/awakened_leaders/${i + 1}.jpg`);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Nghệ thuật xoay lệch và độ lệch trục Y so le (staggered) tạo cảm giác cực kỳ sang trọng và tự nhiên như tạp chí thời trang
+  const rotations = [-5, 4, -2, 3, -4, 2, -3, 5, -1, 4];
+  const yOffsets = [16, -12, 22, -14, 10, -18, 14, -8, 18, -12];
+
+  const handleNext = () => {
+    if (containerRef.current) {
+      const cardWidth = window.innerWidth < 768 ? 214 : 320; // card width + gap
+      containerRef.current.scrollBy({ left: cardWidth, behavior: "smooth" });
+    }
+  };
+
+  const handlePrev = () => {
+    if (containerRef.current) {
+      const cardWidth = window.innerWidth < 768 ? 214 : 320; // card width + gap
+      containerRef.current.scrollBy({ left: -cardWidth, behavior: "smooth" });
+    }
+  };
+
+  // Tự động lướt trôi nhẹ nhàng (smooth automatic drift)
+  useEffect(() => {
+    if (isHovered) return;
+    const interval = setInterval(() => {
+      if (containerRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+        if (scrollLeft >= scrollWidth - clientWidth - 20) {
+          containerRef.current.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          const stepWidth = window.innerWidth < 768 ? 214 : 320;
+          containerRef.current.scrollBy({ left: stepWidth, behavior: "smooth" });
+        }
+      }
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [isHovered]);
+
+  return (
+    <div 
+      className="space-y-8"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <style>{`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+
+      <div className="flex justify-between items-center relative z-10">
+        <h4 className="text-xs font-mono uppercase tracking-widest text-white/40 pl-4">Khoảnh khắc & Hoạt động</h4>
+        <div className="flex gap-2">
+          <button 
+            onClick={handlePrev}
+            className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-white/30 text-white transition-all cursor-pointer bg-black/30 backdrop-blur-sm"
+            aria-label="Previous image"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button 
+            onClick={handleNext}
+            className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-white/30 text-white transition-all cursor-pointer bg-black/30 backdrop-blur-sm"
+            aria-label="Next image"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      </div>
+
+      {/* Container mở rộng tràn viền (dàn rộng ra ngoài viền lề màn hình một chút) */}
+      <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-4 md:px-12 overflow-visible">
+        <div 
+          ref={containerRef}
+          className="flex gap-6 md:gap-10 overflow-x-auto py-12 px-12 scroll-smooth no-scrollbar snap-x snap-mandatory"
+        >
+          {images.map((imgUrl, idx) => {
+            const rot = rotations[idx % rotations.length];
+            const yOff = yOffsets[idx % yOffsets.length];
+
+            return (
+              <AwakenedLeadersCard key={idx} imgUrl={imgUrl} idx={idx} rot={rot} yOff={yOff} />
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const RetreatCard = ({ imgUrl, idx, rot, yOff }: { imgUrl: string; idx: number; rot: number; yOff: number }) => {
+  const [hidden, setHidden] = useState(false);
+  if (hidden) return null;
+  return (
+    <motion.div
+      className="flex-shrink-0 w-[190px] md:w-[280px] h-[260px] md:h-[400px] rounded-[2rem] overflow-hidden border border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.75)] snap-center bg-zinc-950 relative cursor-pointer"
+      animate={{ rotate: rot, y: yOff }}
+      whileHover={{ scale: 1.05, rotate: 0, y: yOff - 15, borderColor: "rgba(255,255,255,0.3)", zIndex: 30 }}
+      transition={{ type: "spring", stiffness: 260, damping: 20 }}
+    >
+      <img
+        src={imgUrl}
+        alt={`Yên Tử Retreat ${idx + 1}`}
+        className="w-full h-full object-cover select-none pointer-events-none opacity-85 hover:opacity-100 transition-opacity duration-300"
+        referrerPolicy="no-referrer"
+        onError={() => setHidden(true)}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+    </motion.div>
+  );
+};
+
+const RetreatGallery = () => {
+  const defaultImages = [
+    "/assets/projects/finland/6.jpg",
+    "/assets/projects/finland/3.jpg",
+    "/assets/projects/finland/5.jpg",
+    "/assets/projects/startup_trip/7.jpg",
+    "/assets/projects/startup_trip/3.jpg",
+    "/assets/projects/greenbio/3.jpg",
+    "/assets/projects/greenbio/4.jpg",
+    "/assets/projects/greenbio/7.jpg",
+    "/assets/projects/greenbio/8.jpg",
+    "/assets/projects/finland/8.jpg"
+  ];
+
+  // Thêm ảnh: đặt tên theo số thứ tự tiếp theo vào folder retreat (tối đa 20)
+  const images = Array.from({ length: 20 }, (_, i) => `/assets/projects/retreat/${i + 1}.jpg`);
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
+
+  const rotations = [-4, 3, -1, 5, -3, 2, -5, 4, -2, 3];
+  const yOffsets = [12, -10, 18, -14, 8, -16, 14, -6, 16, -10];
+
+  const handleNext = () => {
+    if (containerRef.current) {
+      const cardWidth = window.innerWidth < 768 ? 214 : 320;
+      containerRef.current.scrollBy({ left: cardWidth, behavior: "smooth" });
+    }
+  };
+
+  const handlePrev = () => {
+    if (containerRef.current) {
+      const cardWidth = window.innerWidth < 768 ? 214 : 320;
+      containerRef.current.scrollBy({ left: -cardWidth, behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    if (isHovered) return;
+    const interval = setInterval(() => {
+      if (containerRef.current) {
+        const { scrollLeft, scrollWidth, clientWidth } = containerRef.current;
+        if (scrollLeft >= scrollWidth - clientWidth - 20) {
+          containerRef.current.scrollTo({ left: 0, behavior: "smooth" });
+        } else {
+          const stepWidth = window.innerWidth < 768 ? 214 : 320;
+          containerRef.current.scrollBy({ left: stepWidth, behavior: "smooth" });
+        }
+      }
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [isHovered]);
+
+  return (
+    <div 
+      className="space-y-8"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      <style>{`
+        .no-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+        .no-scrollbar {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+      `}</style>
+
+      <div className="flex justify-between items-center relative z-10">
+        <h4 className="text-xs font-mono uppercase tracking-widest text-white/40 pl-4">Không gian & Khoảnh khắc Tu tập</h4>
+        <div className="flex gap-2">
+          <button 
+            onClick={handlePrev}
+            className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-white/30 text-white transition-all cursor-pointer bg-black/30 backdrop-blur-sm"
+            aria-label="Previous image"
+          >
+            <ChevronLeft size={16} />
+          </button>
+          <button 
+            onClick={handleNext}
+            className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center hover:bg-white/5 hover:border-white/30 text-white transition-all cursor-pointer bg-black/30 backdrop-blur-sm"
+            aria-label="Next image"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      </div>
+
+      <div className="relative w-screen left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] px-4 md:px-12 overflow-visible">
+        <div 
+          ref={containerRef}
+          className="flex gap-6 md:gap-10 overflow-x-auto py-12 px-12 scroll-smooth no-scrollbar snap-x snap-mandatory"
+        >
+          {images.map((imgUrl, idx) => {
+            const rot = rotations[idx % rotations.length];
+            const yOff = yOffsets[idx % yOffsets.length];
+
+            return (
+              <RetreatCard key={idx} imgUrl={imgUrl} idx={idx} rot={rot} yOff={yOff} />
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 const GlassButton = ({ 
   children, 
@@ -141,11 +545,11 @@ const Home = ({ projects }: { projects: Project[] }) => {
   const [activeProjectIndex, setActiveProjectIndex] = useState(0);
   const activeProject = projects[activeProjectIndex];
 
-  // Auto-advance logic: Every 2 seconds
+  // Auto-advance logic: Every 5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveProjectIndex((prev) => (prev + 1) % projects.length);
-    }, 2000);
+    }, 5000);
     return () => clearInterval(timer);
   }, [activeProjectIndex, projects.length]);
 
@@ -165,8 +569,13 @@ const Home = ({ projects }: { projects: Project[] }) => {
             Nhật Quang <sup className="text-[10px] font-body opacity-60 tracking-wider">SVF</sup>
           </div>
           <div className="hidden md:flex items-center gap-10">
-            {['Home', 'Projects', 'Gallery', 'About'].map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`} className="text-sm text-white/50 hover:text-white transition-colors duration-300 tracking-wide">{item}</a>
+            {[
+              { label: 'Home', href: '#home' },
+              { label: 'Projects', href: '#projects' },
+              { label: 'Beyond Workspace', href: '#gallery' },
+              { label: 'About', href: '#about' }
+            ].map((item) => (
+              <a key={item.label} href={item.href} className="text-sm text-white/50 hover:text-white transition-colors duration-300 tracking-wide">{item.label}</a>
             ))}
             <a href="/docs/cv.pdf" target="_blank" className="text-xs font-body tracking-[0.2em] uppercase text-white/30 hover:text-white border border-white/10 px-4 py-2 rounded-lg transition-all">Resume PDF</a>
           </div>
@@ -191,7 +600,7 @@ const Home = ({ projects }: { projects: Project[] }) => {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-24 items-start border-t border-white/5 pt-32 text-left">
+          <div id="about" className="grid md:grid-cols-2 gap-24 items-start border-t border-white/5 pt-32 text-left">
               <div className="space-y-12">
                 <div className="animate-fade-rise">
                   <h2 className="font-display text-5xl text-white mb-8">Học vấn & <em className="not-italic text-white/40">Chuyên môn</em></h2>
@@ -284,7 +693,7 @@ const Home = ({ projects }: { projects: Project[] }) => {
                       <motion.div 
                         initial={{ scaleX: 0 }}
                         animate={{ scaleX: 1 }}
-                        transition={{ duration: 2, ease: "linear" }}
+                        transition={{ duration: 5, ease: "linear" }}
                         className="absolute bottom-0 left-0 h-0.5 bg-white origin-left w-full pointer-events-none opacity-20"
                       />
                     )}
@@ -336,31 +745,134 @@ const Home = ({ projects }: { projects: Project[] }) => {
           </div>
         </section>
 
+        <VoyagerGallery />
+
         <section id="gallery" className="py-32 bg-black/60 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 relative z-10">
+            {/* Header */}
             <div className="text-center mb-24 space-y-6">
-              <h2 className="font-display text-5xl md:text-7xl text-white">Beyond the <em className="not-italic text-white/40">Workspace</em></h2>
-              <p className="text-white/50 text-lg max-w-2xl mx-auto">Sự bền bỉ trên những cung đường Trekking và tinh thần đồng đội nảy lửa trên sân Bóng bầu dục.</p>
+              <h2 className="font-display text-5xl md:text-7xl text-white">
+                Beyond the <em className="not-italic text-white/40">Workspace</em>
+              </h2>
+              <p className="text-white/50 text-lg max-w-2xl mx-auto">
+                Những hoạt động phi lợi nhuận và phong cách sống - Nơi tôi rèn luyện sự bền bỉ, tinh thần kỷ luật và kết nối cộng đồng.
+              </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[300px]">
-              <div className="md:col-span-2 md:row-span-2">
-                <TiltCard image="/assets/gallery/rugby3.jpg" className="w-full h-full">
-                  <div className="absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-black/80 to-transparent">
-                    <p className="text-xs uppercase tracking-widest text-white/60">Sport</p>
-                    <p className="text-2xl font-display text-white">Rugby Enthusiast</p>
+
+            {/* Layer 1: Lãnh Đạo Tỉnh Thức & Cộng Đồng */}
+            <div className="mb-32 space-y-16">
+              <div className="border-l-4 border-white/20 pl-6 space-y-4">
+                <span className="text-xs font-mono uppercase tracking-[0.3em] text-white/40">Volunteer Leadership Programs</span>
+                <h3 className="font-display text-3xl md:text-5xl text-white leading-tight">
+                  Lãnh Đạo Tỉnh Thức (Awakened Leaders), CEO Tỉnh Thức & YTP HCM
+                </h3>
+              </div>
+
+              {/* Roles & Mission Grid */}
+              <div className="grid md:grid-cols-2 gap-12 items-stretch">
+                <div className="flex flex-col gap-6 h-full justify-between">
+                  <div className="liquid-glass p-8 rounded-[2rem] border border-white/10 space-y-4 flex-grow">
+                    <h4 className="text-sm font-mono uppercase tracking-widest text-white/60">Sứ mệnh & Mục tiêu</h4>
+                    <p className="text-white/80 text-lg leading-relaxed font-light">
+                      <span className="text-white font-medium">"Khai phóng các nhà lãnh đạo"</span>. Chuỗi chương trình được thiết kế nhằm chuyển hóa tâm thức, đánh thức và nâng tầm năng lực cho giới doanh nhân & khởi nghiệp, thành công thu hút hơn <span className="text-white font-medium">1.500+ nhà điều hành cấp cao</span> từ đa dạng các tổ chức lớn tham gia. Qua việc dấn thân phụng sự cộng đồng, tôi có cơ hội làm quen, đồng hành sâu sắc, và học hỏi rất nhiều từ các anh chị CEO, nhà sáng lập cùng các chuyên đề chuyển hóa đặc sắc.
+                    </p>
                   </div>
-                </TiltCard>
+
+                  <div className="liquid-glass p-8 rounded-[2rem] border border-white/10 space-y-4 flex-shrink-0">
+                    <h4 className="text-sm font-mono uppercase tracking-widest text-white/60">Vai trò đóng góp (Tình nguyện viên Core Team)</h4>
+                    <div className="flex flex-wrap gap-2 pt-2">
+                      {["Thiết kế chương trình và chăm sóc speaker", "Điều phối tổng chương trình", "Quản lý hậu cần", "Quản lý kỹ thuật", "Quản lý khách mời"].map((role, i) => (
+                        <span key={i} className="text-xs bg-white/10 hover:bg-white/20 text-white/90 px-4 py-2 rounded-full border border-white/5 transition-all">
+                          {role}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* The 5 Key Programs (Scrollable) */}
+                <div className="space-y-6 flex flex-col h-[460px] md:h-[480px]">
+                  <h4 className="text-xs font-mono uppercase tracking-widest text-white/40 mb-2 pl-4 flex-shrink-0">Các chương trình đặc sắc & Bài học đúc kết</h4>
+                  <div className="space-y-4 overflow-y-auto pr-2 flex-grow custom-scrollbar">
+                    {[
+                      {
+                        title: "1. Văn hóa Dân tộc & Doanh nghiệp",
+                        desc: "Sự kết hợp hài hòa giữa căn tính văn hóa Việt và phương pháp quản trị hiện đại, là chìa khóa kiến tạo nên bản sắc cốt lõi và sự phát triển bền vững cho doanh nghiệp Việt Nam."
+                      },
+                      {
+                        title: "2. Storytelling",
+                        desc: "Nơi bày tỏ lòng biết ơn chân thành gửi tới Thầy Nguyễn Trần Quang & Thầy Phạm Duy Hiếu. Chương trình khơi dậy sức mạnh của nghệ thuật kể chuyện chân thành để truyền cảm hứng, kết nối tâm hồn và dẫn dắt tập thể, cùng thông điệp thức tỉnh: \"Sống một cuộc đời đáng kể và kể nó bằng tất cả sự chân thành\"."
+                      },
+                      {
+                        title: "3. Design You – Design Your Business",
+                        desc: "Hành trình định hình bản sắc cá nhân độc bản và thiết kế mô hình doanh nghiệp từ chính nội tâm của bạn. Giúp các nhà điều hành gỡ bỏ áp lực vô hình để đạt tới trạng thái \"Tự do nội tâm\" – nền tảng vững chắc của một Lãnh đạo Tỉnh thức."
+                      },
+                      {
+                        title: "4. Tinh hoa Lãnh đạo Phương Đông",
+                        desc: "Khảo sát và đúc kết những minh triết sâu sắc của tiền nhân, kết nối các lát cắt lịch sử vào bối cảnh quản trị thời đại mới, khơi dậy niềm tự hào căn tính Việt Nam kiên cường và vững vàng trước mọi biến động."
+                      },
+                      {
+                        title: "5. X10 Kiến tạo hạnh phúc",
+                        desc: "Triết lý phát triển toàn diện nơi sự thành công vượt trội luôn đi song hành cùng hạnh phúc chân thật. Giúp các nhà lãnh đạo xây dựng đời sống tinh thần viên mãn bên cạnh sự nghiệp kinh doanh rực rỡ."
+                      }
+                    ].map((prog, idx) => (
+                      <div key={idx} className="liquid-glass p-6 rounded-2xl border border-white/5 hover:border-white/25 transition-all space-y-2">
+                        <h5 className="font-display text-lg text-white font-medium">{prog.title}</h5>
+                        <p className="text-white/60 text-sm leading-relaxed font-light">{prog.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-              <div className="md:col-span-2 md:row-span-1"><TiltCard image="/assets/gallery/trekking4.jpg" className="w-full h-full" /></div>
-              <div className="md:col-span-1 md:row-span-1"><TiltCard image="/assets/gallery/running1.jpg" className="w-full h-full" /></div>
-              <div className="md:col-span-1 md:row-span-1"><TiltCard image="/assets/gallery/running2.jpg" className="w-full h-full" /></div>
-              <div className="md:col-span-2 md:row-span-1"><TiltCard image="/assets/gallery/activity5.jpg" className="w-full h-full" /></div>
-              <div className="md:col-span-2 md:row-span-1">
-                 <div className="liquid-glass w-full h-full rounded-[2rem] flex flex-col items-center justify-center p-8 text-center border border-white/5">
-                    <p className="font-display text-3xl text-white mb-2 italic">Life in Motion</p>
-                    <p className="text-white/40 text-sm">Chạy bộ, Trekking và Rugby không chỉ là thể thao - đó là cách tôi rèn luyện sự bền bỉ và tinh thần kỷ luật.</p>
-                 </div>
+
+              {/* Photo Grid for Community programs */}
+              <AwakenedLeadersGallery />
+            </div>
+  <div className="border-l-4 border-white/20 pl-6 space-y-4">
+                <span className="text-xs font-mono uppercase tracking-[0.3em] text-white/40">Hoạt động khác</span>
+                <h3 className="font-display text-3xl md:text-5xl text-white leading-tight">
+Chạy bộ, Trekking và Flag football không chỉ là thể thao - đó là cách tôi rèn luyện sự bền bỉ và tinh thần kỷ luật và tinh thần lãnh đạo
+
+                </h3>
               </div>
+            {/* Layer 2: Thể Thao & Phong Cách Sống */}
+            <div className="space-y-12 border-t border-white/5 pt-16">
+              <div className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-[300px]">
+                <div className="md:col-span-2 md:row-span-2">
+                  <TiltCard image="/assets/gallery/rugby3.jpg" className="w-full h-full">
+                    <div className="absolute inset-x-0 bottom-0 p-8 bg-gradient-to-t from-black/80 to-transparent">
+                      <p className="text-xs uppercase tracking-widest text-white/60">Sport</p>
+                      <p className="text-2xl font-display text-white">Rugby Enthusiast</p>
+                    </div>
+                  </TiltCard>
+                </div>
+                <div className="md:col-span-2 md:row-span-1"><TiltCard image="/assets/gallery/trekking4.jpg" className="w-full h-full" /></div>
+                <div className="md:col-span-1 md:row-span-1"><TiltCard image="/assets/gallery/running1.jpg" className="w-full h-full" /></div>
+                <div className="md:col-span-1 md:row-span-1"><TiltCard image="/assets/gallery/running2.jpg" className="w-full h-full" /></div>
+                <div className="md:col-span-2 md:row-span-1"><TiltCard image="/assets/gallery/activity5.jpg" className="w-full h-full" /></div>
+                <div className="md:col-span-2 md:row-span-1">
+                   <div className="liquid-glass w-full h-full rounded-[2rem] flex flex-col items-center justify-center p-8 text-center border border-white/5">
+                      <p className="font-display text-3xl text-white mb-2 italic">Life in Motion</p>
+                      <p className="text-white/40 text-sm">Chạy bộ, Trekking và Rugby không chỉ là thể thao - đó là cách tôi rèn luyện sự bền bỉ và tinh thần kỷ luật.</p>
+                   </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Layer 3: Hành Trình Về Nguồn & Tu Tập */}
+            <div className="space-y-16 border-t border-white/5 pt-24 mt-24">
+              <div className="border-l-4 border-white/20 pl-6 space-y-4">
+                <span className="text-xs font-mono uppercase tracking-[0.3em] text-white/40">Hành Trình Về Nguồn & Tu Tập</span>
+                <h3 className="font-display text-3xl md:text-5xl text-white leading-tight">
+                  Thầy Pháp Nhật tại Yên Tử
+                </h3>
+                <p className="text-white/50 text-base max-w-4xl font-light leading-relaxed">
+                  Nhận thức sâu sắc triết lý <span className="text-white font-medium">'Tâm lặng mà biết'</span> và bài học <span className="text-white font-medium">'Trong núi vốn không có Phật'</span> để xây dựng sự kiên định nội tại. Không tìm kiếm giải pháp hay bình an từ các yếu tố bên ngoài, mà quay vào bên trong để làm chủ cảm xúc, giữ sự điềm tĩnh và minh mẫn trước áp lực lớn hay biến động thị trường.
+                </p>
+              </div>
+
+              {/* Photo Grid for Retreat */}
+              <RetreatGallery />
             </div>
           </div>
         </section>
@@ -392,9 +904,9 @@ const Home = ({ projects }: { projects: Project[] }) => {
           <div className="w-1 h-1 rounded-full bg-green-500/40 animate-pulse" />
         </div>
             <div className="flex gap-8 text-white/40 text-xs tracking-widest uppercase">
-              <a href="#" className="hover:text-white transition-colors">Facebook</a>
+              <a href="https://www.facebook.com/trannhat.quang.311/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Facebook</a>
               <a href="https://www.instagram.com/sapios_error/?hl=en" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Instagram</a>
-              <a href="#" className="hover:text-white transition-colors">Behance</a>
+              <a href="https://www.linkedin.com/in/quang-tr%E1%BA%A7n-nh%E1%BA%ADt-67351b36b/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
             </div>
           </footer>
         </section>

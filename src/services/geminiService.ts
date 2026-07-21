@@ -26,6 +26,9 @@ THÔNG TIN DỰ ÁN (Sắp xếp theo quy mô):
 [KẾT NỐI ĐẦU TƯ]
 - Vietnam-Japan M&A Matching: Project Coordinator. Cầu nối M&A giữa doanh nghiệp Việt và nđt Nhật Bản.
 
+[LÃNH ĐẠO CỘNG ĐỒNG]
+- Lãnh Đạo Tỉnh Thức (Awakened Leaders), CEO Tỉnh Thức & YTP HCM: Core Team Member. Chuỗi chương trình lãnh đạo phụng sự cộng đồng doanh nhân và khởi nghiệp, thu hút hơn 1,500 lãnh đạo cấp cao tham gia thông qua các chuyên đề Văn hóa Dân tộc - Storytelling, Design You - Design Your Business và Tinh hoa Lãnh đạo Phương Đông.
+
 HỌC VẤN: Đại học FPT (Software Engineering), Chứng chỉ PM (UC Irvine), Chứng chỉ UX (University of Michigan).
 `;
 

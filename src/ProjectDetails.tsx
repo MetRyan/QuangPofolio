@@ -118,7 +118,46 @@ const projectData: Record<string, ProjectDetails> = {
     images: [
       "/assets/projects/finland/1.jpg", "/assets/projects/finland/2.jpg", "/assets/projects/finland/3.jpg", "/assets/projects/finland/4.jpg", "/assets/projects/finland/5.jpg", "/assets/projects/finland/6.jpg", "/assets/projects/finland/7.jpg", "/assets/projects/finland/8.jpg", "/assets/projects/finland/9.jpg", "/assets/projects/finland/10.jpg"
     ]
+  },
+  "9": {
+    id: 9,
+    title: "Lãnh Đạo Tỉnh Thức (Awakened Leaders), CEO Tỉnh Thức & YTP HCM",
+    role: "CORE TEAM MEMBER",
+    description: "Volunteer leadership programs for the entrepreneurial and business community.",
+    longDescription: "Lãnh Đạo Tỉnh Thức (Awakened Leaders), CEO Tỉnh Thức & YTP HCM là chuỗi chương trình lãnh đạo phụng sự cộng đồng doanh nhân và khởi nghiệp. Dự án đã kiến tạo nhiều hoạt động đào tạo và chuyên đề chuyển hóa sâu sắc nhằm khai phóng tiềm năng của các nhà điều hành:\n\n1. VĂN HÓA DÂN TỘC & DOANH NGHIỆP - STORYTELLING: Buổi chia sẻ đầy cảm hứng từ Thầy Nguyễn Trần Quang với công thức kể chuyện lay động lòng người, truyền lửa về thương hiệu; cùng Thầy Phạm Duy Hiếu - người kể chuyện bằng sự tử tế và nhân văn. Sự kiện đọng lại thông điệp sâu sắc: 'Sống một cuộc đời đáng kể và kể nó bằng tất cả sự chân thành'. Kể về điều mình tin, kể để truyền cảm hứng, kể để kết nối và dẫn dắt.\n\n2. DESIGN YOU – DESIGN YOUR BUSINESS: Hành trình xây dựng bản sắc cá nhân và định hình doanh nghiệp từ chính bạn. Chương trình được thiết kế đặc biệt dành riêng cho Doanh nhân, Chủ doanh nghiệp, Lãnh đạo để thấu suốt bản thân, gỡ bỏ mâu thuẫn để đạt tới 'Tự do nội tâm' - nền tảng cốt lõi của Lãnh đạo Tỉnh thức.\n\n3. TINH HOA LÃNH ĐẠO PHƯƠNG ĐÔNG: Kết nối tinh hoa, minh triết tiền nhân và căn tính dân tộc được gìn giữ qua nhiều thế hệ vào bối cảnh hiện đại. Hành trình mang sứ mệnh lan tỏa lòng tự hào Việt Nam và tinh thần văn hóa dân tộc bền vững tới nhiều vùng đất mới.",
+    location: "TP.HCM & Da Nang, Vietnam",
+    date: "June - July 2026",
+    // Thêm ảnh: đặt tên theo số thứ tự tiếp theo vào folder awakened_leaders (tối đa 20)
+    images: Array.from({ length: 20 }, (_, i) => `/assets/projects/awakened_leaders/${i + 1}.jpg`)
   }
+};
+
+const ProjectImageCard = ({ img, title, i, delay }: { img: string; title: string; i: number; delay: number; key?: React.Key }) => {
+  const [hasError, setHasError] = useState(false);
+
+  if (hasError) return null;
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0, y: 30 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay }}
+      className={cn(
+        "liquid-glass rounded-[2rem] overflow-hidden",
+        i === 0 ? "aspect-[16/10]" : "aspect-[16/11]",
+        i === 0 && "md:col-span-2"
+      )}
+    >
+      <img 
+        src={img} 
+        alt={`${title} - ${i}`} 
+        className="w-full h-full object-cover transition-all duration-1000 transform hover:scale-105" 
+        referrerPolicy="no-referrer"
+        onError={() => setHasError(true)}
+      />
+    </motion.div>
+  );
 };
 
 export default function ProjectDetails() {
@@ -196,25 +235,13 @@ export default function ProjectDetails() {
       <section className="px-8 max-w-7xl mx-auto pb-40">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {project.images.map((img, i) => (
-            <motion.div 
+            <ProjectImageCard 
               key={i}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className={cn(
-                "liquid-glass rounded-[2rem] overflow-hidden",
-                i === 0 ? "aspect-[16/10]" : "aspect-[16/11]",
-                i === 0 && "md:col-span-2"
-              )}
-            >
-              <img 
-                src={img} 
-                alt={`${project.title} - ${i}`} 
-                className="w-full h-full object-cover transition-all duration-1000 transform hover:scale-105" 
-                referrerPolicy="no-referrer"
-              />
-            </motion.div>
+              img={img}
+              title={project.title}
+              i={i}
+              delay={i * 0.1}
+            />
           ))}
         </div>
 
