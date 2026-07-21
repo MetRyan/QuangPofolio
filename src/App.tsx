@@ -801,7 +801,7 @@ const Home = ({ projects }: { projects: Project[] }) => {
                       },
                       {
                         title: "2. Storytelling",
-                        desc: "Nơi bày tỏ lòng biết ơn chân thành gửi tới Thầy Nguyễn Trần Quang & Thầy Phạm Duy Hiếu. Chương trình khơi dậy sức mạnh của nghệ thuật kể chuyện chân thành để truyền cảm hứng, kết nối tâm hồn và dẫn dắt tập thể, cùng thông điệp thức tỉnh: \"Sống một cuộc đời đáng kể và kể nó bằng tất cả sự chân thành\"."
+                        desc: "Thầy Nguyễn Trần Quang & Thầy Phạm Duy Hiếu. Chương trình khơi dậy sức mạnh của nghệ thuật kể chuyện chân thành để truyền cảm hứng, kết nối tâm hồn và dẫn dắt tập thể, cùng thông điệp thức tỉnh: \"Sống một cuộc đời đáng kể và kể nó bằng tất cả sự chân thành\"."
                       },
                       {
                         title: "3. Design You – Design Your Business",
