@@ -168,10 +168,20 @@
       "folder": "retreat",
       "maxImages": 20,
       "hidden": false
+    },
+    {
+      "id": "activity-1787554097956",
+      "label": "HÀNH TRÌNH 4 NGÀY TẠI DAEJEON, HÀN QUỐC",
+      "title": "GREENBIO GLOBAL IDEA CONNECT WORKSHOP 2026",
+      "description": " Chương trình được đồng tổ chức bởi Liên minh các trường đại học Sinh học Xanh Hàn Quốc (GreenBio COSS Consortium) - bao gồm ĐHQG Seoul, ĐHQG Chungnam, ĐH Kyung Hee, ĐHQG Chonnam, Cao đẳng Yonam, cùng đơn vị Andone (Hàn Quốc) và Quỹ Khởi nghiệp Doanh nghiệp Khoa học và Công nghệ Việt Nam (SVF) tổ chức triển khai chương trình",
+      "galleryLabel": "Khoảnh khắc",
+      "folder": "HanQuoc",
+      "maxImages": 20,
+      "hidden": false
     }
   ],
   "about": {
-    "educationTitleMain": "Học vấn &",
+    "educationTitleMain": "Học vấn &ssss",
     "educationTitleEm": "Chuyên môn",
     "education": [
       {
