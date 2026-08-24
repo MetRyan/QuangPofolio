@@ -1,36 +1,6 @@
 {
   "projects": [
     {
-      "id": 1787551898477,
-      "title": "Dự án mới",
-      "subtitle": "",
-      "role": "PROJECT MANAGER",
-      "category": "Hợp tác quốc tế",
-      "description": "",
-      "longDescription": "",
-      "location": "",
-      "date": "",
-      "imageUrl": "/assets/projects/new_project/1.jpg",
-      "imageFolder": "new_project",
-      "maxImages": 20,
-      "hidden": false
-    },
-    {
-      "id": 1787551889676,
-      "title": "Dự án mớiaadsda",
-      "subtitle": "",
-      "role": "PROJECT MANAGER",
-      "category": "Hợp tác quốc tế",
-      "description": "",
-      "longDescription": "",
-      "location": "",
-      "date": "",
-      "imageUrl": "/assets/projects/new_projectTest/1.jpg",
-      "imageFolder": "new_projectTest",
-      "maxImages": 20,
-      "hidden": false
-    },
-    {
       "id": 4,
       "title": "TECHFEST VIETNAM 2024",
       "subtitle": "Bộ Khoa học và Công nghệ & SVF",
