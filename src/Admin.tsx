@@ -4,6 +4,7 @@ import {
   ArrowLeft,
   ChevronDown,
   ChevronUp,
+  CloudUpload,
   Download,
   Eye,
   EyeOff,
@@ -15,6 +16,14 @@ import {
 } from "lucide-react";
 import { cn } from "@/src/lib/utils";
 import type { ActivityContent, ProjectContent, SiteContent } from "./data/types";
+import {
+  loadGitHubSettings,
+  loadGitHubToken,
+  publishContentToGitHub,
+  saveGitHubSettings,
+  saveGitHubToken,
+  type GitHubPublishSettings,
+} from "./data/githubPublish";
 import {
   ADMIN_PASSWORD,
   isAdminAuthenticated,
@@ -68,12 +77,16 @@ export default function AdminPage() {
   const [tab, setTab] = useState<Tab>("projects");
   const [editingId, setEditingId] = useState<number | string | null>(null);
   const [message, setMessage] = useState("");
+  const [githubToken, setGithubToken] = useState(loadGitHubToken());
+  const [githubSettings, setGithubSettings] = useState<GitHubPublishSettings>(loadGitHubSettings());
+  const [publishing, setPublishing] = useState(false);
+  const [showPublishPanel, setShowPublishPanel] = useState(false);
 
   const visibleProjects = useMemo(() => content.projects, [content.projects]);
 
   const flash = (text: string) => {
     setMessage(text);
-    setTimeout(() => setMessage(""), 2500);
+    setTimeout(() => setMessage(""), 4000);
   };
 
   const login = (e: React.FormEvent) => {
@@ -119,6 +132,27 @@ export default function AdminPage() {
       }
     };
     reader.readAsText(file);
+  };
+
+  const publishToGitHub = async () => {
+    if (!githubToken.trim()) {
+      setShowPublishPanel(true);
+      flash("Dán GitHub Personal Access Token rồi bấm Publish");
+      return;
+    }
+    setPublishing(true);
+    try {
+      saveGitHubToken(githubToken);
+      saveGitHubSettings(githubSettings);
+      const result = await publishContentToGitHub(content, githubToken, githubSettings);
+      flash(
+        `Đã publish lên GitHub! Commit ${result.commitSha.slice(0, 7) || "ok"}. Đợi site rebuild ~1–2 phút rồi soft-refresh trang chủ (không dùng bản localStorage cũ trên máy khác).`
+      );
+    } catch (err) {
+      flash(err instanceof Error ? err.message : "Publish thất bại");
+    } finally {
+      setPublishing(false);
+    }
   };
 
   if (!ready) {
@@ -172,6 +206,12 @@ export default function AdminPage() {
           </div>
           <div className="flex flex-wrap gap-2">
             <button
+              onClick={() => setShowPublishPanel((v) => !v)}
+              className="flex items-center gap-2 px-4 py-2 rounded-full border border-emerald-400/40 bg-emerald-500/10 text-emerald-100 text-sm hover:bg-emerald-500/20 cursor-pointer"
+            >
+              <CloudUpload size={14} /> Publish lên GitHub
+            </button>
+            <button
               onClick={downloadJson}
               className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 text-sm hover:bg-white/5 cursor-pointer"
             >
@@ -205,20 +245,108 @@ export default function AdminPage() {
       </header>
 
       {message && (
-        <div className="bg-emerald-500/15 border-b border-emerald-500/30 text-emerald-200 text-sm text-center py-2">
+        <div className="bg-emerald-500/15 border-b border-emerald-500/30 text-emerald-200 text-sm text-center py-2 px-4">
           {message}
         </div>
       )}
 
       <div className="max-w-6xl mx-auto px-6 py-8 space-y-8">
+        {showPublishPanel && (
+          <div className="rounded-2xl border border-emerald-500/30 bg-emerald-500/5 p-5 space-y-4">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h2 className="font-display text-xl text-emerald-50">Publish trực tiếp lên GitHub</h2>
+                <p className="text-sm text-emerald-100/70 mt-1">
+                  Bấm Publish → cập nhật <code className="text-emerald-200">public/content.json</code> trên repo → hosting tự deploy.
+                  Token chỉ lưu tạm trong session trình duyệt (không commit vào code).
+                </p>
+              </div>
+              <button
+                onClick={() => setShowPublishPanel(false)}
+                className="text-emerald-100/50 hover:text-white text-sm cursor-pointer"
+              >
+                Đóng
+              </button>
+            </div>
+
+            <label className="block space-y-1.5">
+              <span className="text-[10px] uppercase tracking-widest text-emerald-100/50">
+                GitHub Personal Access Token (classic: repo, hoặc fine-grained: Contents Read/Write)
+              </span>
+              <input
+                type="password"
+                value={githubToken}
+                onChange={(e) => setGithubToken(e.target.value)}
+                placeholder="ghp_... hoặc github_pat_..."
+                className="w-full bg-black/40 border border-emerald-500/20 rounded-xl px-4 py-2.5 outline-none focus:border-emerald-400/50 text-sm"
+              />
+            </label>
+
+            <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-3">
+              <label className="block space-y-1">
+                <span className="text-[10px] uppercase tracking-widest text-emerald-100/50">Owner</span>
+                <input
+                  value={githubSettings.owner}
+                  onChange={(e) => setGithubSettings({ ...githubSettings, owner: e.target.value })}
+                  className="w-full bg-black/40 border border-emerald-500/20 rounded-xl px-3 py-2 outline-none text-sm"
+                />
+              </label>
+              <label className="block space-y-1">
+                <span className="text-[10px] uppercase tracking-widest text-emerald-100/50">Repo</span>
+                <input
+                  value={githubSettings.repo}
+                  onChange={(e) => setGithubSettings({ ...githubSettings, repo: e.target.value })}
+                  className="w-full bg-black/40 border border-emerald-500/20 rounded-xl px-3 py-2 outline-none text-sm"
+                />
+              </label>
+              <label className="block space-y-1">
+                <span className="text-[10px] uppercase tracking-widest text-emerald-100/50">Branch</span>
+                <input
+                  value={githubSettings.branch}
+                  onChange={(e) => setGithubSettings({ ...githubSettings, branch: e.target.value })}
+                  className="w-full bg-black/40 border border-emerald-500/20 rounded-xl px-3 py-2 outline-none text-sm"
+                />
+              </label>
+              <label className="block space-y-1">
+                <span className="text-[10px] uppercase tracking-widest text-emerald-100/50">Path</span>
+                <input
+                  value={githubSettings.path}
+                  onChange={(e) => setGithubSettings({ ...githubSettings, path: e.target.value })}
+                  className="w-full bg-black/40 border border-emerald-500/20 rounded-xl px-3 py-2 outline-none text-sm"
+                />
+              </label>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-3">
+              <button
+                onClick={publishToGitHub}
+                disabled={publishing}
+                className="flex items-center gap-2 px-5 py-2.5 rounded-full bg-emerald-400 text-black text-sm font-medium hover:bg-emerald-300 disabled:opacity-50 cursor-pointer"
+              >
+                <CloudUpload size={14} />
+                {publishing ? "Đang publish..." : "Publish ngay"}
+              </button>
+              <a
+                href="https://github.com/settings/tokens?type=beta"
+                target="_blank"
+                rel="noreferrer"
+                className="text-xs text-emerald-200/70 underline underline-offset-2 hover:text-emerald-100"
+              >
+                Tạo Fine-grained token →
+              </a>
+              <p className="text-xs text-emerald-100/50">
+                Quyền: Repository <strong>QuangPofolio</strong> · Contents: Read and write
+              </p>
+            </div>
+          </div>
+        )}
+
         <div className="rounded-2xl border border-amber-500/20 bg-amber-500/5 p-4 text-sm text-amber-100/80 space-y-1">
           <p>
-            <strong>Cách dùng:</strong> Sửa ở đây → trang chủ cập nhật ngay trên máy bạn. Để lên web công khai: bấm{" "}
-            <em>Xuất content.json</em> → thay file <code className="text-amber-200">public/content.json</code> → commit &amp; deploy.
+            <strong>Cách nhanh nhất:</strong> Sửa nội dung → bấm <em>Publish lên GitHub</em> → đợi hosting rebuild (~1–2 phút) → web công khai cập nhật.
           </p>
           <p>
-            Ảnh: tạo folder trong <code className="text-amber-200">public/assets/projects/&lt;tên_folder&gt;/</code> và đặt{" "}
-            <code className="text-amber-200">1.jpg, 2.jpg...</code>
+            Ảnh vẫn bỏ tay vào <code className="text-amber-200">public/assets/projects/&lt;folder&gt;/1.jpg, 2.jpg...</code> rồi commit ảnh (hoặc upload qua GitHub web).
           </p>
         </div>
 
