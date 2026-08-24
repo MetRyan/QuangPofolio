@@ -1,21 +1,6 @@
 {
   "projects": [
     {
-      "id": 4,
-      "title": "TECHFEST VIETNAM 2024",
-      "subtitle": "Bộ Khoa học và Công nghệ & SVF",
-      "role": "PROJECT COORDINATOR",
-      "category": "Quy mô quốc gia",
-      "description": "Vinh danh Top 3 Cuộc thi Tìm kiếm tài năng Khởi nghiệp Sáng tạo Quốc gia TECHFEST 2024 tại Lễ Khai mạc với sự tham dự của Thủ tướng Chính phủ.",
-      "longDescription": "Tại Hải Phòng, Thủ tướng Chính phủ Phạm Minh Chính đã dự Lễ khai mạc TECHFEST 2024 với chủ đề “Chung tay phát triển hệ sinh thái khởi nghiệp sáng tạo Việt Nam”. Top 3 đội thi xuất sắc nhất đã được vinh danh, nhận lãnh trách nhiệm truyền cảm hứng về vai trò của đổi mới sáng tạo trong thời đại mới.",
-      "location": "Hai Phong, Vietnam",
-      "date": "November 2024",
-      "imageUrl": "/assets/projects/techfest2024/1.jpg",
-      "imageFolder": "techfest2024",
-      "maxImages": 12,
-      "hidden": false
-    },
-    {
       "id": 8,
       "title": "Vietnam Innovation Challenge (ViGen)",
       "subtitle": "NIC x Meta x AI for Vietnam",
@@ -31,18 +16,18 @@
       "hidden": false
     },
     {
-      "id": 5,
-      "title": "Vietnam Market Deep-Dive Series",
-      "subtitle": "Austrade Market Entry Insights",
+      "id": 4,
+      "title": "TECHFEST VIETNAM 2024",
+      "subtitle": "Bộ Khoa học và Công nghệ & SVF",
       "role": "PROJECT COORDINATOR",
-      "category": "Hợp tác Chính phủ (Australia)",
-      "description": "Cung cấp cái nhìn thực tế về thị trường Việt Nam cho doanh nghiệp Australia, thúc đẩy kết nối giao thương bền vững.",
-      "longDescription": "Dự án hợp tác với Austrade nhằm cung cấp cái nhìn thực tế về thị trường Việt Nam cho doanh nghiệp Australia. Tôi chịu trách nhiệm điều phối khung hậu cần, chuẩn bị tài liệu sự kiện và đảm bảo sự sẵn sàng cho đại diện Austrade để kiến tạo các kết nối thương mại bền vững giữa hai quốc gia.",
-      "location": "Ho Chi Minh City, Vietnam",
-      "date": "April - May 2025",
-      "imageUrl": "/assets/projects/vietnam_market/1.jpg",
-      "imageFolder": "vietnam_market",
-      "maxImages": 2,
+      "category": "Quy mô quốc gia",
+      "description": "Vinh danh Top 3 Cuộc thi Tìm kiếm tài năng Khởi nghiệp Sáng tạo Quốc gia TECHFEST 2024 tại Lễ Khai mạc với sự tham dự của Thủ tướng Chính phủ.",
+      "longDescription": "Tại Hải Phòng, Thủ tướng Chính phủ Phạm Minh Chính đã dự Lễ khai mạc TECHFEST 2024 với chủ đề “Chung tay phát triển hệ sinh thái khởi nghiệp sáng tạo Việt Nam”. Top 3 đội thi xuất sắc nhất đã được vinh danh, nhận lãnh trách nhiệm truyền cảm hứng về vai trò của đổi mới sáng tạo trong thời đại mới.",
+      "location": "Hai Phong, Vietnam",
+      "date": "November 2024",
+      "imageUrl": "/assets/projects/techfest2024/1.jpg",
+      "imageFolder": "techfest2024",
+      "maxImages": 12,
       "hidden": false
     },
     {
@@ -58,6 +43,21 @@
       "imageUrl": "/assets/projects/project1/1.jpg",
       "imageFolder": "project1",
       "maxImages": 17,
+      "hidden": false
+    },
+    {
+      "id": 5,
+      "title": "Vietnam Market Deep-Dive Series",
+      "subtitle": "Austrade Market Entry Insights",
+      "role": "PROJECT COORDINATOR",
+      "category": "Hợp tác Chính phủ (Australia)",
+      "description": "Cung cấp cái nhìn thực tế về thị trường Việt Nam cho doanh nghiệp Australia, thúc đẩy kết nối giao thương bền vững.",
+      "longDescription": "Dự án hợp tác với Austrade nhằm cung cấp cái nhìn thực tế về thị trường Việt Nam cho doanh nghiệp Australia. Tôi chịu trách nhiệm điều phối khung hậu cần, chuẩn bị tài liệu sự kiện và đảm bảo sự sẵn sàng cho đại diện Austrade để kiến tạo các kết nối thương mại bền vững giữa hai quốc gia.",
+      "location": "Ho Chi Minh City, Vietnam",
+      "date": "April - May 2025",
+      "imageUrl": "/assets/projects/vietnam_market/1.jpg",
+      "imageFolder": "vietnam_market",
+      "maxImages": 2,
       "hidden": false
     },
     {
@@ -82,7 +82,7 @@
       "role": "PROJECT MANAGER",
       "category": "Hợp tác quốc tế",
       "description": "Hành trình Day 2 & 3 tại Daejeon: khám phá ETRI, Smart Farm, Fparma6 và KIT — chuẩn bị pitching giải pháp GreenBio cho thị trường Việt Nam.",
-      "longDescription": "Sau ngày đầu tiên tại Đại học Quốc gia Chungnam (CNU), hành trình “GreenBio Global Idea Connect Workshop 2026” tiếp tục với hai ngày trải nghiệm tại các viện nghiên cứu, mô hình nông nghiệp thông minh và doanh nghiệp GreenBio ở Daejeon.\n\nDAY 2 | KHÁM PHÁ CÔNG NGHỆ VÀ HẠ TẦNG GREENBIO\n\nTham quan Viện Nghiên cứu Điện tử và Viễn thông Hàn Quốc (ETRI): ETRI là một viện nghiên cứu do chính phủ Hàn Quốc tài trợ, chuyên về công nghệ thông tin, truyền thông và điện tử. Tại ETRI, sinh viên được tìm hiểu về những công nghệ tiên tiến và các giải pháp công nghệ được phát triển, ứng dụng trong thực tế.\n\nKhám phá Daejeon Farm — Mô hình Smart Farm tại Boramae Park: Ngay gần công viên Boramae, một đường hầm ngầm tưởng như đã bị lãng quên nay lại được tái sinh thành trang trại thông minh hiện đại. Sinh viên được giới thiệu về cách vận hành mô hình nông nghiệp thông minh và các công nghệ liên quan đến tưới cây, cung cấp phân bón và sử dụng ánh sáng nhân tạo.\n\nTìm hiểu về Fparma6 — doanh nghiệp công nghệ sinh học xanh tại Daejeon: Các bạn tiếp tục tìm hiểu về hoạt động của Fparma6, qua đó có thêm góc nhìn về cách các giải pháp và sản phẩm trong lĩnh vực này được phát triển và ứng dụng trong thực tế.\n\nWorkshop hoàn thiện ý tưởng: Sau chuỗi hoạt động tham quan, các đội sinh viên được ghép cặp cùng mentor, tổng hợp insight thu nhận được và nhận phản hồi để tiếp tục hoàn thiện ý tưởng giải quyết cho thị trường Việt Nam.\n\nDAY 3 | TÌM HIỂU QUY TRÌNH NGHIÊN CỨU VÀ KẾT NỐI KINH NGHIỆM HÀN – VIỆT\n\nTham quan Viện Nghiên cứu Độc chất Hàn Quốc (KIT): Trong gần 20 năm, KIT đi đầu trong nghiên cứu về độc tính ở Hàn Quốc và quốc tế. Sinh viên tham gia phiên chia sẻ của các nghiên cứu viên, tham quan cơ sở nghiên cứu và tìm hiểu quy trình nghiên cứu, xử lý và kiểm nghiệm trước khi sản phẩm y tế và sức khỏe được đưa vào sử dụng.\n\nBài giảng chuyên đề “Xu hướng GreenBio và các trường hợp hợp tác Hàn - Việt”: Chương trình mang đến nội dung về xu hướng công nghệ sinh học xanh toàn cầu và các case study hợp tác Hàn – Việt, giúp sinh viên hiểu cách doanh nghiệp Hàn Quốc đưa giải pháp vào Việt Nam và những yếu tố cần cân nhắc khi phát triển giải pháp cho thị trường mới.\n\nWorkshop hoàn thiện ý tưởng — chuẩn bị pitching: Từ kiến thức và trải nghiệm hai ngày, các đội tập trung xây dựng nội dung trình bày. Ngày 14/08/2026, 6 đội trình bày trước 3 chuyên gia đánh giá (10 phút pitch + 5 phút Q&A); 02 đội xuất sắc nhất nhận hỗ trợ tư vấn tiếp nối.",
+      "longDescription": "Sau ngày đầu tiên tại Đại học Quốc gia Chungnam (CNU), hành trình “GreenBio Global Idea Connect Workshop 2026” tiếp tục với hai ngày trải nghiệm tại các viện nghiên cứu, mô hình nông nghiệp thông minh và doanh nghiệp GreenBio ở Daejeon.\n\nNếu ngày đầu tiên mở đầu bằng những kiến thức về Sinh học Xanh và nông nghiệp thông minh, thì ngày 2 và 3 là giai đoạn các đội có thêm dữ liệu và trải nghiệm thực tế để tiếp tục phát triển, điều chỉnh và chuẩn bị cho ý tưởng của mình trước phần pitching.\n\nDAY 2 | KHÁM PHÁ CÔNG NGHỆ VÀ HẠ TẦNG GREENBIO\n\nTham quan Viện Nghiên cứu Điện tử và Viễn thông Hàn Quốc (ETRI): ETRI là một viện nghiên cứu do chính phủ Hàn Quốc tài trợ, chuyên về công nghệ thông tin, truyền thông và điện tử. Tại ETRI, sinh viên được tìm hiểu về những công nghệ tiên tiến và các giải pháp công nghệ được phát triển, ứng dụng trong thực tế.\n\nKhám phá Daejeon Farm — Mô hình Smart Farm tại Boramae Park: Ngay gần công viên Boramae, một đường hầm ngầm tưởng như đã bị lãng quên nay lại được tái sinh thành trang trại thông minh hiện đại. Sinh viên được giới thiệu về cách vận hành mô hình nông nghiệp thông minh và các công nghệ liên quan đến tưới cây, cung cấp phân bón và sử dụng ánh sáng nhân tạo.\n\nTìm hiểu về Fparma6 — doanh nghiệp công nghệ sinh học xanh tại Daejeon: Các bạn tiếp tục tìm hiểu về hoạt động của Fparma6, qua đó có thêm góc nhìn về cách các giải pháp và sản phẩm trong lĩnh vực này được phát triển và ứng dụng trong thực tế.\n\nWorkshop hoàn thiện ý tưởng: Sau chuỗi hoạt động tham quan, các đội sinh viên được ghép cặp cùng mentor, tổng hợp insight thu nhận được và nhận phản hồi để tiếp tục hoàn thiện ý tưởng giải quyết cho thị trường Việt Nam.\n\nDAY 3 | TÌM HIỂU QUY TRÌNH NGHIÊN CỨU VÀ KẾT NỐI KINH NGHIỆM HÀN – VIỆT\n\nTham quan Viện Nghiên cứu Độc chất Hàn Quốc (KIT): Trong gần 20 năm, KIT đi đầu trong nghiên cứu về độc tính ở Hàn Quốc và quốc tế. Sinh viên tham gia phiên chia sẻ của các nghiên cứu viên, tham quan cơ sở nghiên cứu và tìm hiểu quy trình nghiên cứu, xử lý và kiểm nghiệm trước khi sản phẩm y tế và sức khỏe được đưa vào sử dụng.\n\nBài giảng chuyên đề “Xu hướng GreenBio và các trường hợp hợp tác Hàn - Việt”: Chương trình mang đến nội dung về xu hướng công nghệ sinh học xanh toàn cầu và các case study hợp tác Hàn – Việt, giúp sinh viên hiểu cách doanh nghiệp Hàn Quốc đưa giải pháp vào Việt Nam và những yếu tố cần cân nhắc khi phát triển giải pháp cho thị trường mới.\n\nWorkshop hoàn thiện ý tưởng — chuẩn bị pitching: Từ kiến thức và trải nghiệm hai ngày, các đội tập trung xây dựng nội dung trình bày. Ngày 14/08/2026, 6 đội trình bày trước 3 chuyên gia đánh giá (10 phút pitch + 5 phút Q&A); 02 đội xuất sắc nhất nhận hỗ trợ tư vấn tiếp nối.",
       "location": "Daejeon, South Korea",
       "date": "August 2026",
       "imageUrl": "/assets/projects/greenbio_connect_2026/1.jpg",
@@ -155,7 +155,7 @@
     "label": "Curated Moments",
     "title": "Khoảnh khắc Đồng hành",
     "folder": "curated_moments",
-    "maxImages": 43,
+    "maxImages": 40,
     "hiddenImages": []
   },
   "activities": [
@@ -168,16 +168,101 @@
       "folder": "retreat",
       "maxImages": 20,
       "hidden": false
-    },
-    {
-      "id": "activity-1787549275740",
-      "label": "Hoạt động mới",
-      "title": "Tiêu đề hoạt động",
-      "description": "Mô tả ngắn về hoạt động...",
-      "galleryLabel": "Khoảnh khắc",
-      "folder": "activity_1787549275740",
-      "maxImages": 20,
-      "hidden": false
     }
-  ]
+  ],
+  "about": {
+    "educationTitleMain": "Học vấn &",
+    "educationTitleEm": "Chuyên môn",
+    "education": [
+      {
+        "id": "edu-fpt",
+        "period": "2021 — 2025",
+        "institution": "FPT University",
+        "detail": "Bachelor of Software Engineering",
+        "hidden": false
+      },
+      {
+        "id": "edu-uci",
+        "period": "Professional Certificate",
+        "institution": "University of California, Irvine",
+        "detail": "Project Management Project",
+        "hidden": false
+      },
+      {
+        "id": "edu-umich",
+        "period": "Professional Certificate",
+        "institution": "University of Michigan",
+        "detail": "Introduction to UX Principles and Processes",
+        "hidden": false
+      }
+    ],
+    "experienceTitleMain": "Kinh nghiệm",
+    "experienceTitleEm": "Thực thi",
+    "experience": [
+      {
+        "id": "exp-svf",
+        "period": "2024 — Hiện tại",
+        "company": "Startup Vietnam Foundation (SVF)",
+        "description": "Tham gia điều phối và quản trị các dự án đổi mới sáng tạo cấp quốc gia, kết nối hệ sinh thái khởi nghiệp Việt Nam với các nguồn lực quốc tế.",
+        "hidden": false
+      }
+    ]
+  },
+  "beyondWorkspace": {
+    "titleMain": "Beyond the",
+    "titleEm": "Workspace",
+    "subtitle": "Những hoạt động phi lợi nhuận và phong cách sống - Nơi tôi rèn luyện sự bền bỉ, tinh thần kỷ luật và kết nối cộng đồng.",
+    "leadership": {
+      "hidden": false,
+      "label": "Volunteer Leadership Programs",
+      "title": "Lãnh Đạo Tỉnh Thức (Awakened Leaders), CEO Tỉnh Thức & YTP HCM",
+      "missionTitle": "Sứ mệnh & Mục tiêu",
+      "missionText": "\"Khai phóng các nhà lãnh đạo\". Chuỗi chương trình được thiết kế nhằm chuyển hóa tâm thức, đánh thức và nâng tầm năng lực cho giới doanh nhân & khởi nghiệp, thành công thu hút hơn 1.500+ nhà điều hành cấp cao từ đa dạng các tổ chức lớn tham gia. Qua việc dấn thân phụng sự cộng đồng, tôi có cơ hội làm quen, đồng hành sâu sắc, và học hỏi rất nhiều từ các anh chị CEO, nhà sáng lập cùng các chuyên đề chuyển hóa đặc sắc.",
+      "rolesTitle": "Vai trò đóng góp (Tình nguyện viên Core Team)",
+      "roles": [
+        "Thiết kế chương trình và chăm sóc speaker",
+        "Điều phối tổng chương trình",
+        "Quản lý hậu cần",
+        "Quản lý kỹ thuật",
+        "Quản lý khách mời"
+      ],
+      "programsTitle": "Các chương trình đặc sắc & Bài học đúc kết",
+      "programs": [
+        {
+          "id": "prog-1",
+          "title": "1. Văn hóa Dân tộc & Doanh nghiệp",
+          "desc": "Sự kết hợp hài hòa giữa căn tính văn hóa Việt và phương pháp quản trị hiện đại, là chìa khóa kiến tạo nên bản sắc cốt lõi và sự phát triển bền vững cho doanh nghiệp Việt Nam.",
+          "hidden": false
+        },
+        {
+          "id": "prog-2",
+          "title": "2. Storytelling",
+          "desc": "Thầy Nguyễn Trần Quang & Thầy Phạm Duy Hiếu. Chương trình khơi dậy sức mạnh của nghệ thuật kể chuyện chân thành để truyền cảm hứng, kết nối tâm hồn và dẫn dắt tập thể, cùng thông điệp thức tỉnh: \"Sống một cuộc đời đáng kể và kể nó bằng tất cả sự chân thành\".",
+          "hidden": false
+        },
+        {
+          "id": "prog-3",
+          "title": "3. Design You – Design Your Business",
+          "desc": "Hành trình định hình bản sắc cá nhân độc bản và thiết kế mô hình doanh nghiệp từ chính nội tâm của bạn. Giúp các nhà điều hành gỡ bỏ áp lực vô hình để đạt tới trạng thái \"Tự do nội tâm\" – nền tảng vững chắc của một Lãnh đạo Tỉnh thức.",
+          "hidden": false
+        },
+        {
+          "id": "prog-4",
+          "title": "4. Tinh hoa Lãnh đạo Phương Đông",
+          "desc": "Khảo sát và đúc kết những minh triết sâu sắc của tiền nhân, kết nối các lát cắt lịch sử vào bối cảnh quản trị thời đại mới, khơi dậy niềm tự hào căn tính Việt Nam kiên cường và vững vàng trước mọi biến động.",
+          "hidden": false
+        },
+        {
+          "id": "prog-5",
+          "title": "5. X10 Kiến tạo hạnh phúc",
+          "desc": "Triết lý phát triển toàn diện nơi sự thành công vượt trội luôn đi song hành cùng hạnh phúc chân thật. Giúp các nhà lãnh đạo xây dựng đời sống tinh thần viên mãn bên cạnh sự nghiệp kinh doanh rực rỡ.",
+          "hidden": false
+        }
+      ],
+      "galleryLabel": "Khoảnh khắc & Hoạt động",
+      "folder": "awakened_leaders",
+      "maxImages": 20,
+      "hiddenImages": []
+    }
+  }
 }

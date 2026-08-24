@@ -11,7 +11,13 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-route
 import ProjectDetailsPage from "./ProjectDetails";
 import AdminPage from "./Admin";
 import { ChatAssistant } from "./components/ChatAssistant";
-import type { ActivityContent, CuratedMomentsContent, ProjectContent } from "./data/types";
+import type {
+  ActivityContent,
+  BeyondWorkspaceContent,
+  CuratedMomentsContent,
+  AboutContent,
+  ProjectContent,
+} from "./data/types";
 import { curatedImageList, useSiteContent } from "./data/useSiteContent";
 
 // --- Types ---
@@ -192,10 +198,18 @@ const AwakenedLeadersCard = ({ imgUrl, idx, rot, yOff }: { imgUrl: string; idx: 
   );
 };
 
-const AwakenedLeadersGallery = () => {
-  // Thêm ảnh: đặt tên theo số thứ tự tiếp theo vào folder awakened_leaders (tối đa 20)
-  // Thêm ảnh: đặt tên theo số thứ tự tiếp theo vào folder awakened_leaders (tối đa 20)
-  const images = Array.from({ length: 20 }, (_, i) => `/assets/projects/awakened_leaders/${i + 1}.jpg`);
+const AwakenedLeadersGallery = ({
+  folder,
+  maxImages,
+  hiddenImages,
+  galleryLabel,
+}: {
+  folder: string;
+  maxImages: number;
+  hiddenImages: number[];
+  galleryLabel: string;
+}) => {
+  const images = curatedImageList(folder, maxImages, hiddenImages);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -252,7 +266,7 @@ const AwakenedLeadersGallery = () => {
       `}</style>
 
       <div className="flex justify-between items-center relative z-10">
-        <h4 className="text-xs font-mono uppercase tracking-widest text-white/40 pl-4">Khoảnh khắc & Hoạt động</h4>
+        <h4 className="text-xs font-mono uppercase tracking-widest text-white/40 pl-4">{galleryLabel}</h4>
         <div className="flex gap-2">
           <button 
             onClick={handlePrev}
@@ -531,10 +545,14 @@ const Home = ({
   projects,
   curated,
   activities,
+  about,
+  beyondWorkspace,
 }: {
   projects: Project[];
   curated: CuratedMomentsContent;
   activities: ActivityContent[];
+  about: AboutContent;
+  beyondWorkspace: BeyondWorkspaceContent;
 }) => {
   const navigate = useNavigate();
   const [activeProjectIndex, setActiveProjectIndex] = useState(0);
@@ -611,40 +629,44 @@ const Home = ({
           <div id="about" className="grid md:grid-cols-2 gap-24 items-start border-t border-white/5 pt-32 text-left">
               <div className="space-y-12">
                 <div className="animate-fade-rise">
-                  <h2 className="font-display text-5xl text-white mb-8">Học vấn & <em className="not-italic text-white/40">Chuyên môn</em></h2>
+                  <h2 className="font-display text-5xl text-white mb-8">
+                    {about.educationTitleMain}{" "}
+                    <em className="not-italic text-white/40">{about.educationTitleEm}</em>
+                  </h2>
                   <div className="space-y-8">
-                    <div className="group">
-                      <p className="text-xs text-white/30 mb-1 tracking-widest">2021 — 2025</p>
-                      <h4 className="text-xl font-display text-white">FPT University</h4>
-                      <p className="text-white/50 text-sm">Bachelor of Software Engineering</p>
-                    </div>
-                    <div className="group border-t border-white/5 pt-8">
-                      <p className="text-xs text-white/30 mb-1 tracking-widest">Professional Certificate</p>
-                      <h4 className="text-xl font-display text-white">University of California, Irvine</h4>
-                      <p className="text-white/50 text-sm">Project Management Project</p>
-                    </div>
-                    <div className="group border-t border-white/5 pt-8">
-                      <p className="text-xs text-white/30 mb-1 tracking-widest">Professional Certificate</p>
-                      <h4 className="text-xl font-display text-white">University of Michigan</h4>
-                      <p className="text-white/50 text-sm">Introduction to UX Principles and Processes</p>
-                    </div>
+                    {about.education.filter((e) => !e.hidden).map((item, index) => (
+                      <div
+                        key={item.id}
+                        className={cn("group", index > 0 && "border-t border-white/5 pt-8")}
+                      >
+                        <p className="text-xs text-white/30 mb-1 tracking-widest">{item.period}</p>
+                        <h4 className="text-xl font-display text-white">{item.institution}</h4>
+                        <p className="text-white/50 text-sm">{item.detail}</p>
+                      </div>
+                    ))}
                   </div>
                 </div>
               </div>
               <div className="space-y-12 animate-fade-rise">
                 <div>
-                  <h2 className="font-display text-5xl text-white mb-8">Kinh nghiệm <em className="not-italic text-white/40">Thực thi</em></h2>
+                  <h2 className="font-display text-5xl text-white mb-8">
+                    {about.experienceTitleMain}{" "}
+                    <em className="not-italic text-white/40">{about.experienceTitleEm}</em>
+                  </h2>
                   <div className="space-y-8">
-                    <div className="liquid-glass p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group">
-                      <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
-                         <MapPin className="w-12 h-12" />
+                    {about.experience.filter((e) => !e.hidden).map((item) => (
+                      <div
+                        key={item.id}
+                        className="liquid-glass p-8 rounded-[2rem] border border-white/5 relative overflow-hidden group"
+                      >
+                        <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
+                          <MapPin className="w-12 h-12" />
+                        </div>
+                        <p className="text-xs text-white/30 mb-1 tracking-widest">{item.period}</p>
+                        <h4 className="text-2xl font-display text-white">{item.company}</h4>
+                        <p className="text-white/60 mt-4 leading-relaxed">{item.description}</p>
                       </div>
-                      <p className="text-xs text-white/30 mb-1 tracking-widest">2024 — Hiện tại</p>
-                      <h4 className="text-2xl font-display text-white">Startup Vietnam Foundation (SVF)</h4>
-                      <p className="text-white/60 mt-4 leading-relaxed">
-                        Tham gia điều phối và quản trị các dự án đổi mới sáng tạo cấp quốc gia, kết nối hệ sinh thái khởi nghiệp Việt Nam với các nguồn lực quốc tế.
-                      </p>
-                    </div>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -757,40 +779,46 @@ const Home = ({
 
         <section id="gallery" className="py-32 bg-black/60 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 relative z-10">
-            {/* Header */}
             <div className="text-center mb-24 space-y-6">
               <h2 className="font-display text-5xl md:text-7xl text-white">
-                Beyond the <em className="not-italic text-white/40">Workspace</em>
+                {beyondWorkspace.titleMain}{" "}
+                <em className="not-italic text-white/40">{beyondWorkspace.titleEm}</em>
               </h2>
-              <p className="text-white/50 text-lg max-w-2xl mx-auto">
-                Những hoạt động phi lợi nhuận và phong cách sống - Nơi tôi rèn luyện sự bền bỉ, tinh thần kỷ luật và kết nối cộng đồng.
-              </p>
+              <p className="text-white/50 text-lg max-w-2xl mx-auto">{beyondWorkspace.subtitle}</p>
             </div>
 
-            {/* Layer 1: Lãnh Đạo Tỉnh Thức & Cộng Đồng */}
+            {!beyondWorkspace.leadership.hidden && (
             <div className="mb-32 space-y-16">
               <div className="border-l-4 border-white/20 pl-6 space-y-4">
-                <span className="text-xs font-mono uppercase tracking-[0.3em] text-white/40">Volunteer Leadership Programs</span>
+                <span className="text-xs font-mono uppercase tracking-[0.3em] text-white/40">
+                  {beyondWorkspace.leadership.label}
+                </span>
                 <h3 className="font-display text-3xl md:text-5xl text-white leading-tight">
-                  Lãnh Đạo Tỉnh Thức (Awakened Leaders), CEO Tỉnh Thức & YTP HCM
+                  {beyondWorkspace.leadership.title}
                 </h3>
               </div>
 
-              {/* Roles & Mission Grid */}
               <div className="grid md:grid-cols-2 gap-12 items-stretch">
                 <div className="flex flex-col gap-6 h-full justify-between">
                   <div className="liquid-glass p-8 rounded-[2rem] border border-white/10 space-y-4 flex-grow">
-                    <h4 className="text-sm font-mono uppercase tracking-widest text-white/60">Sứ mệnh & Mục tiêu</h4>
-                    <p className="text-white/80 text-lg leading-relaxed font-light">
-                      <span className="text-white font-medium">"Khai phóng các nhà lãnh đạo"</span>. Chuỗi chương trình được thiết kế nhằm chuyển hóa tâm thức, đánh thức và nâng tầm năng lực cho giới doanh nhân & khởi nghiệp, thành công thu hút hơn <span className="text-white font-medium">1.500+ nhà điều hành cấp cao</span> từ đa dạng các tổ chức lớn tham gia. Qua việc dấn thân phụng sự cộng đồng, tôi có cơ hội làm quen, đồng hành sâu sắc, và học hỏi rất nhiều từ các anh chị CEO, nhà sáng lập cùng các chuyên đề chuyển hóa đặc sắc.
+                    <h4 className="text-sm font-mono uppercase tracking-widest text-white/60">
+                      {beyondWorkspace.leadership.missionTitle}
+                    </h4>
+                    <p className="text-white/80 text-lg leading-relaxed font-light whitespace-pre-line">
+                      {beyondWorkspace.leadership.missionText}
                     </p>
                   </div>
 
                   <div className="liquid-glass p-8 rounded-[2rem] border border-white/10 space-y-4 flex-shrink-0">
-                    <h4 className="text-sm font-mono uppercase tracking-widest text-white/60">Vai trò đóng góp (Tình nguyện viên Core Team)</h4>
+                    <h4 className="text-sm font-mono uppercase tracking-widest text-white/60">
+                      {beyondWorkspace.leadership.rolesTitle}
+                    </h4>
                     <div className="flex flex-wrap gap-2 pt-2">
-                      {["Thiết kế chương trình và chăm sóc speaker", "Điều phối tổng chương trình", "Quản lý hậu cần", "Quản lý kỹ thuật", "Quản lý khách mời"].map((role, i) => (
-                        <span key={i} className="text-xs bg-white/10 hover:bg-white/20 text-white/90 px-4 py-2 rounded-full border border-white/5 transition-all">
+                      {beyondWorkspace.leadership.roles.map((role, i) => (
+                        <span
+                          key={`${role}-${i}`}
+                          className="text-xs bg-white/10 hover:bg-white/20 text-white/90 px-4 py-2 rounded-full border border-white/5 transition-all"
+                        >
                           {role}
                         </span>
                       ))}
@@ -798,44 +826,34 @@ const Home = ({
                   </div>
                 </div>
 
-                {/* The 5 Key Programs (Scrollable) */}
                 <div className="space-y-6 flex flex-col h-[460px] md:h-[480px]">
-                  <h4 className="text-xs font-mono uppercase tracking-widest text-white/40 mb-2 pl-4 flex-shrink-0">Các chương trình đặc sắc & Bài học đúc kết</h4>
+                  <h4 className="text-xs font-mono uppercase tracking-widest text-white/40 mb-2 pl-4 flex-shrink-0">
+                    {beyondWorkspace.leadership.programsTitle}
+                  </h4>
                   <div className="space-y-4 overflow-y-auto pr-2 flex-grow custom-scrollbar">
-                    {[
-                      {
-                        title: "1. Văn hóa Dân tộc & Doanh nghiệp",
-                        desc: "Sự kết hợp hài hòa giữa căn tính văn hóa Việt và phương pháp quản trị hiện đại, là chìa khóa kiến tạo nên bản sắc cốt lõi và sự phát triển bền vững cho doanh nghiệp Việt Nam."
-                      },
-                      {
-                        title: "2. Storytelling",
-                        desc: "Thầy Nguyễn Trần Quang & Thầy Phạm Duy Hiếu. Chương trình khơi dậy sức mạnh của nghệ thuật kể chuyện chân thành để truyền cảm hứng, kết nối tâm hồn và dẫn dắt tập thể, cùng thông điệp thức tỉnh: \"Sống một cuộc đời đáng kể và kể nó bằng tất cả sự chân thành\"."
-                      },
-                      {
-                        title: "3. Design You – Design Your Business",
-                        desc: "Hành trình định hình bản sắc cá nhân độc bản và thiết kế mô hình doanh nghiệp từ chính nội tâm của bạn. Giúp các nhà điều hành gỡ bỏ áp lực vô hình để đạt tới trạng thái \"Tự do nội tâm\" – nền tảng vững chắc của một Lãnh đạo Tỉnh thức."
-                      },
-                      {
-                        title: "4. Tinh hoa Lãnh đạo Phương Đông",
-                        desc: "Khảo sát và đúc kết những minh triết sâu sắc của tiền nhân, kết nối các lát cắt lịch sử vào bối cảnh quản trị thời đại mới, khơi dậy niềm tự hào căn tính Việt Nam kiên cường và vững vàng trước mọi biến động."
-                      },
-                      {
-                        title: "5. X10 Kiến tạo hạnh phúc",
-                        desc: "Triết lý phát triển toàn diện nơi sự thành công vượt trội luôn đi song hành cùng hạnh phúc chân thật. Giúp các nhà lãnh đạo xây dựng đời sống tinh thần viên mãn bên cạnh sự nghiệp kinh doanh rực rỡ."
-                      }
-                    ].map((prog, idx) => (
-                      <div key={idx} className="liquid-glass p-6 rounded-2xl border border-white/5 hover:border-white/25 transition-all space-y-2">
-                        <h5 className="font-display text-lg text-white font-medium">{prog.title}</h5>
-                        <p className="text-white/60 text-sm leading-relaxed font-light">{prog.desc}</p>
-                      </div>
-                    ))}
+                    {beyondWorkspace.leadership.programs
+                      .filter((prog) => !prog.hidden)
+                      .map((prog) => (
+                        <div
+                          key={prog.id}
+                          className="liquid-glass p-6 rounded-2xl border border-white/5 hover:border-white/25 transition-all space-y-2"
+                        >
+                          <h5 className="font-display text-lg text-white font-medium">{prog.title}</h5>
+                          <p className="text-white/60 text-sm leading-relaxed font-light">{prog.desc}</p>
+                        </div>
+                      ))}
                   </div>
                 </div>
               </div>
 
-              {/* Photo Grid for Community programs */}
-              <AwakenedLeadersGallery />
+              <AwakenedLeadersGallery
+                folder={beyondWorkspace.leadership.folder}
+                maxImages={beyondWorkspace.leadership.maxImages}
+                hiddenImages={beyondWorkspace.leadership.hiddenImages}
+                galleryLabel={beyondWorkspace.leadership.galleryLabel}
+              />
             </div>
+            )}
   <div className="border-l-4 border-white/20 pl-6 space-y-4">
                 <span className="text-xs font-mono uppercase tracking-[0.3em] text-white/40">Hoạt động khác</span>
                 <h3 className="font-display text-3xl md:text-5xl text-white leading-tight">
@@ -964,6 +982,8 @@ export default function App() {
               projects={projects}
               curated={content.curatedMoments}
               activities={content.activities}
+              about={content.about}
+              beyondWorkspace={content.beyondWorkspace}
             />
           }
         />

@@ -192,4 +192,102 @@ export const defaultContent: SiteContent = {
       hidden: false,
     },
   ],
+  about: {
+    educationTitleMain: "Học vấn &",
+    educationTitleEm: "Chuyên môn",
+    education: [
+      {
+        id: "edu-fpt",
+        period: "2021 — 2025",
+        institution: "FPT University",
+        detail: "Bachelor of Software Engineering",
+        hidden: false,
+      },
+      {
+        id: "edu-uci",
+        period: "Professional Certificate",
+        institution: "University of California, Irvine",
+        detail: "Project Management Project",
+        hidden: false,
+      },
+      {
+        id: "edu-umich",
+        period: "Professional Certificate",
+        institution: "University of Michigan",
+        detail: "Introduction to UX Principles and Processes",
+        hidden: false,
+      },
+    ],
+    experienceTitleMain: "Kinh nghiệm",
+    experienceTitleEm: "Thực thi",
+    experience: [
+      {
+        id: "exp-svf",
+        period: "2024 — Hiện tại",
+        company: "Startup Vietnam Foundation (SVF)",
+        description:
+          "Tham gia điều phối và quản trị các dự án đổi mới sáng tạo cấp quốc gia, kết nối hệ sinh thái khởi nghiệp Việt Nam với các nguồn lực quốc tế.",
+        hidden: false,
+      },
+    ],
+  },
+  beyondWorkspace: {
+    titleMain: "Beyond the",
+    titleEm: "Workspace",
+    subtitle:
+      "Những hoạt động phi lợi nhuận và phong cách sống - Nơi tôi rèn luyện sự bền bỉ, tinh thần kỷ luật và kết nối cộng đồng.",
+    leadership: {
+      hidden: false,
+      label: "Volunteer Leadership Programs",
+      title: "Lãnh Đạo Tỉnh Thức (Awakened Leaders), CEO Tỉnh Thức & YTP HCM",
+      missionTitle: "Sứ mệnh & Mục tiêu",
+      missionText:
+        '"Khai phóng các nhà lãnh đạo". Chuỗi chương trình được thiết kế nhằm chuyển hóa tâm thức, đánh thức và nâng tầm năng lực cho giới doanh nhân & khởi nghiệp, thành công thu hút hơn 1.500+ nhà điều hành cấp cao từ đa dạng các tổ chức lớn tham gia. Qua việc dấn thân phụng sự cộng đồng, tôi có cơ hội làm quen, đồng hành sâu sắc, và học hỏi rất nhiều từ các anh chị CEO, nhà sáng lập cùng các chuyên đề chuyển hóa đặc sắc.',
+      rolesTitle: "Vai trò đóng góp (Tình nguyện viên Core Team)",
+      roles: [
+        "Thiết kế chương trình và chăm sóc speaker",
+        "Điều phối tổng chương trình",
+        "Quản lý hậu cần",
+        "Quản lý kỹ thuật",
+        "Quản lý khách mời",
+      ],
+      programsTitle: "Các chương trình đặc sắc & Bài học đúc kết",
+      programs: [
+        {
+          id: "prog-1",
+          title: "1. Văn hóa Dân tộc & Doanh nghiệp",
+          desc: "Sự kết hợp hài hòa giữa căn tính văn hóa Việt và phương pháp quản trị hiện đại, là chìa khóa kiến tạo nên bản sắc cốt lõi và sự phát triển bền vững cho doanh nghiệp Việt Nam.",
+          hidden: false,
+        },
+        {
+          id: "prog-2",
+          title: "2. Storytelling",
+          desc: 'Thầy Nguyễn Trần Quang & Thầy Phạm Duy Hiếu. Chương trình khơi dậy sức mạnh của nghệ thuật kể chuyện chân thành để truyền cảm hứng, kết nối tâm hồn và dẫn dắt tập thể, cùng thông điệp thức tỉnh: "Sống một cuộc đời đáng kể và kể nó bằng tất cả sự chân thành".',
+          hidden: false,
+        },
+        {
+          id: "prog-3",
+          title: "3. Design You – Design Your Business",
+          desc: 'Hành trình định hình bản sắc cá nhân độc bản và thiết kế mô hình doanh nghiệp từ chính nội tâm của bạn. Giúp các nhà điều hành gỡ bỏ áp lực vô hình để đạt tới trạng thái "Tự do nội tâm" – nền tảng vững chắc của một Lãnh đạo Tỉnh thức.',
+          hidden: false,
+        },
+        {
+          id: "prog-4",
+          title: "4. Tinh hoa Lãnh đạo Phương Đông",
+          desc: "Khảo sát và đúc kết những minh triết sâu sắc của tiền nhân, kết nối các lát cắt lịch sử vào bối cảnh quản trị thời đại mới, khơi dậy niềm tự hào căn tính Việt Nam kiên cường và vững vàng trước mọi biến động.",
+          hidden: false,
+        },
+        {
+          id: "prog-5",
+          title: "5. X10 Kiến tạo hạnh phúc",
+          desc: "Triết lý phát triển toàn diện nơi sự thành công vượt trội luôn đi song hành cùng hạnh phúc chân thật. Giúp các nhà lãnh đạo xây dựng đời sống tinh thần viên mãn bên cạnh sự nghiệp kinh doanh rực rỡ.",
+          hidden: false,
+        },
+      ],
+      galleryLabel: "Khoảnh khắc & Hoạt động",
+      folder: "awakened_leaders",
+      maxImages: 20,
+      hiddenImages: [],
+    },
+  },
 };

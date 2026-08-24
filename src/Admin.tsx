@@ -15,7 +15,16 @@ import {
   Upload,
 } from "lucide-react";
 import { cn } from "@/src/lib/utils";
-import type { ActivityContent, ProjectContent, SiteContent } from "./data/types";
+import type {
+  AboutContent,
+  ActivityContent,
+  BeyondWorkspaceContent,
+  EducationItem,
+  ExperienceItem,
+  LeadershipProgramItem,
+  ProjectContent,
+  SiteContent,
+} from "./data/types";
 import {
   loadGitHubSettings,
   loadGitHubToken,
@@ -32,7 +41,7 @@ import {
   useSiteContent,
 } from "./data/useSiteContent";
 
-type Tab = "projects" | "curated" | "activities";
+type Tab = "projects" | "curated" | "activities" | "about" | "beyond";
 
 function moveItem<T>(list: T[], from: number, to: number): T[] {
   if (to < 0 || to >= list.length || from === to) return list;
@@ -356,6 +365,8 @@ export default function AdminPage() {
               ["projects", "1. Dự án Nổi bật"],
               ["curated", "2. Curated Moments"],
               ["activities", "3. Hoạt động khác"],
+              ["about", "4. Học vấn & KN"],
+              ["beyond", "5. Beyond Workspace"],
             ] as const
           ).map(([key, label]) => (
             <button
@@ -396,6 +407,17 @@ export default function AdminPage() {
             editingId={editingId}
             setEditingId={setEditingId}
             onChange={(activities) => patch({ ...content, activities })}
+          />
+        )}
+
+        {tab === "about" && (
+          <AboutAdmin about={content.about} onChange={(about) => patch({ ...content, about })} />
+        )}
+
+        {tab === "beyond" && (
+          <BeyondAdmin
+            beyond={content.beyondWorkspace}
+            onChange={(beyondWorkspace) => patch({ ...content, beyondWorkspace })}
           />
         )}
       </div>
@@ -794,6 +816,491 @@ function ActivitiesAdmin({
         ) : (
           <p className="text-white/40 text-sm">Chọn hoạt động để sửa hoặc thêm mới.</p>
         )}
+      </div>
+    </div>
+  );
+}
+
+function AboutAdmin({
+  about,
+  onChange,
+}: {
+  about: AboutContent;
+  onChange: (about: AboutContent) => void;
+}) {
+  const [eduId, setEduId] = useState<string | null>(about.education[0]?.id ?? null);
+  const [expId, setExpId] = useState<string | null>(about.experience[0]?.id ?? null);
+  const editingEdu = about.education.find((e) => e.id === eduId) ?? null;
+  const editingExp = about.experience.find((e) => e.id === expId) ?? null;
+
+  return (
+    <div className="space-y-12">
+      <div className="grid md:grid-cols-2 gap-4">
+        <Field
+          label="Tiêu đề học vấn (phần 1)"
+          value={about.educationTitleMain}
+          onChange={(v) => onChange({ ...about, educationTitleMain: v })}
+        />
+        <Field
+          label="Tiêu đề học vấn (phần mờ)"
+          value={about.educationTitleEm}
+          onChange={(v) => onChange({ ...about, educationTitleEm: v })}
+        />
+        <Field
+          label="Tiêu đề kinh nghiệm (phần 1)"
+          value={about.experienceTitleMain}
+          onChange={(v) => onChange({ ...about, experienceTitleMain: v })}
+        />
+        <Field
+          label="Tiêu đề kinh nghiệm (phần mờ)"
+          value={about.experienceTitleEm}
+          onChange={(v) => onChange({ ...about, experienceTitleEm: v })}
+        />
+      </div>
+
+      <div className="grid lg:grid-cols-2 gap-8">
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <h3 className="font-display text-xl">Học vấn</h3>
+            <button
+              onClick={() => {
+                const item: EducationItem = {
+                  id: `edu-${Date.now()}`,
+                  period: "2025 — 2026",
+                  institution: "Trường / Tổ chức",
+                  detail: "Chuyên ngành / chứng chỉ",
+                  hidden: false,
+                };
+                onChange({ ...about, education: [...about.education, item] });
+                setEduId(item.id);
+              }}
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-white text-black text-sm cursor-pointer"
+            >
+              <Plus size={14} /> Thêm
+            </button>
+          </div>
+          {about.education.map((item, index) => (
+            <div
+              key={item.id}
+              className={cn(
+                "rounded-2xl border p-4 flex gap-3 items-start",
+                item.hidden ? "opacity-50 border-white/5" : "border-white/10",
+                eduId === item.id && "ring-1 ring-white/40"
+              )}
+            >
+              <div className="flex flex-col gap-0.5">
+                <button
+                  disabled={index === 0}
+                  onClick={() =>
+                    onChange({ ...about, education: moveItem(about.education, index, index - 1) })
+                  }
+                  className="w-7 h-7 rounded-md border border-white/10 flex items-center justify-center disabled:opacity-20 cursor-pointer"
+                >
+                  <ChevronUp size={14} />
+                </button>
+                <button
+                  disabled={index === about.education.length - 1}
+                  onClick={() =>
+                    onChange({ ...about, education: moveItem(about.education, index, index + 1) })
+                  }
+                  className="w-7 h-7 rounded-md border border-white/10 flex items-center justify-center disabled:opacity-20 cursor-pointer"
+                >
+                  <ChevronDown size={14} />
+                </button>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-white/40">{item.period}</p>
+                <p className="font-display truncate">{item.institution}</p>
+              </div>
+              <div className="flex gap-1">
+                <button
+                  onClick={() =>
+                    onChange({
+                      ...about,
+                      education: about.education.map((x) =>
+                        x.id === item.id ? { ...x, hidden: !x.hidden } : x
+                      ),
+                    })
+                  }
+                  className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center cursor-pointer"
+                >
+                  {item.hidden ? <EyeOff size={14} /> : <Eye size={14} />}
+                </button>
+                <button
+                  onClick={() => setEduId(item.id)}
+                  className="px-3 h-9 rounded-full border border-white/10 text-xs cursor-pointer"
+                >
+                  Sửa
+                </button>
+                <button
+                  onClick={() => {
+                    if (!confirm("Xóa mục này?")) return;
+                    onChange({
+                      ...about,
+                      education: about.education.filter((x) => x.id !== item.id),
+                    });
+                    if (eduId === item.id) setEduId(null);
+                  }}
+                  className="w-9 h-9 rounded-full border border-red-500/30 text-red-300 flex items-center justify-center cursor-pointer"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            </div>
+          ))}
+          {editingEdu && (
+            <div className="liquid-glass rounded-2xl border border-white/10 p-4 space-y-3">
+              <Field
+                label="Thời gian / nhãn"
+                value={editingEdu.period}
+                onChange={(v) =>
+                  onChange({
+                    ...about,
+                    education: about.education.map((x) =>
+                      x.id === editingEdu.id ? { ...x, period: v } : x
+                    ),
+                  })
+                }
+              />
+              <Field
+                label="Trường / tổ chức"
+                value={editingEdu.institution}
+                onChange={(v) =>
+                  onChange({
+                    ...about,
+                    education: about.education.map((x) =>
+                      x.id === editingEdu.id ? { ...x, institution: v } : x
+                    ),
+                  })
+                }
+              />
+              <Field
+                label="Chi tiết"
+                value={editingEdu.detail}
+                onChange={(v) =>
+                  onChange({
+                    ...about,
+                    education: about.education.map((x) =>
+                      x.id === editingEdu.id ? { ...x, detail: v } : x
+                    ),
+                  })
+                }
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-4">
+          <div className="flex justify-between items-center">
+            <h3 className="font-display text-xl">Kinh nghiệm</h3>
+            <button
+              onClick={() => {
+                const item: ExperienceItem = {
+                  id: `exp-${Date.now()}`,
+                  period: "2025 — Hiện tại",
+                  company: "Công ty / Tổ chức",
+                  description: "Mô tả công việc...",
+                  hidden: false,
+                };
+                onChange({ ...about, experience: [...about.experience, item] });
+                setExpId(item.id);
+              }}
+              className="flex items-center gap-2 px-4 py-2 rounded-full bg-white text-black text-sm cursor-pointer"
+            >
+              <Plus size={14} /> Thêm
+            </button>
+          </div>
+          {about.experience.map((item, index) => (
+            <div
+              key={item.id}
+              className={cn(
+                "rounded-2xl border p-4 flex gap-3 items-start",
+                item.hidden ? "opacity-50 border-white/5" : "border-white/10",
+                expId === item.id && "ring-1 ring-white/40"
+              )}
+            >
+              <div className="flex flex-col gap-0.5">
+                <button
+                  disabled={index === 0}
+                  onClick={() =>
+                    onChange({ ...about, experience: moveItem(about.experience, index, index - 1) })
+                  }
+                  className="w-7 h-7 rounded-md border border-white/10 flex items-center justify-center disabled:opacity-20 cursor-pointer"
+                >
+                  <ChevronUp size={14} />
+                </button>
+                <button
+                  disabled={index === about.experience.length - 1}
+                  onClick={() =>
+                    onChange({ ...about, experience: moveItem(about.experience, index, index + 1) })
+                  }
+                  className="w-7 h-7 rounded-md border border-white/10 flex items-center justify-center disabled:opacity-20 cursor-pointer"
+                >
+                  <ChevronDown size={14} />
+                </button>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-xs text-white/40">{item.period}</p>
+                <p className="font-display truncate">{item.company}</p>
+              </div>
+              <div className="flex gap-1">
+                <button
+                  onClick={() =>
+                    onChange({
+                      ...about,
+                      experience: about.experience.map((x) =>
+                        x.id === item.id ? { ...x, hidden: !x.hidden } : x
+                      ),
+                    })
+                  }
+                  className="w-9 h-9 rounded-full border border-white/10 flex items-center justify-center cursor-pointer"
+                >
+                  {item.hidden ? <EyeOff size={14} /> : <Eye size={14} />}
+                </button>
+                <button
+                  onClick={() => setExpId(item.id)}
+                  className="px-3 h-9 rounded-full border border-white/10 text-xs cursor-pointer"
+                >
+                  Sửa
+                </button>
+                <button
+                  onClick={() => {
+                    if (!confirm("Xóa mục này?")) return;
+                    onChange({
+                      ...about,
+                      experience: about.experience.filter((x) => x.id !== item.id),
+                    });
+                    if (expId === item.id) setExpId(null);
+                  }}
+                  className="w-9 h-9 rounded-full border border-red-500/30 text-red-300 flex items-center justify-center cursor-pointer"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            </div>
+          ))}
+          {editingExp && (
+            <div className="liquid-glass rounded-2xl border border-white/10 p-4 space-y-3">
+              <Field
+                label="Thời gian"
+                value={editingExp.period}
+                onChange={(v) =>
+                  onChange({
+                    ...about,
+                    experience: about.experience.map((x) =>
+                      x.id === editingExp.id ? { ...x, period: v } : x
+                    ),
+                  })
+                }
+              />
+              <Field
+                label="Công ty / tổ chức"
+                value={editingExp.company}
+                onChange={(v) =>
+                  onChange({
+                    ...about,
+                    experience: about.experience.map((x) =>
+                      x.id === editingExp.id ? { ...x, company: v } : x
+                    ),
+                  })
+                }
+              />
+              <Field
+                label="Mô tả"
+                value={editingExp.description}
+                textarea
+                onChange={(v) =>
+                  onChange({
+                    ...about,
+                    experience: about.experience.map((x) =>
+                      x.id === editingExp.id ? { ...x, description: v } : x
+                    ),
+                  })
+                }
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BeyondAdmin({
+  beyond,
+  onChange,
+}: {
+  beyond: BeyondWorkspaceContent;
+  onChange: (beyond: BeyondWorkspaceContent) => void;
+}) {
+  const L = beyond.leadership;
+  const [progId, setProgId] = useState<string | null>(L.programs[0]?.id ?? null);
+  const editingProg = L.programs.find((p) => p.id === progId) ?? null;
+  const patchLeadership = (partial: Partial<typeof L>) =>
+    onChange({ ...beyond, leadership: { ...L, ...partial } });
+
+  return (
+    <div className="space-y-8">
+      <div className="grid md:grid-cols-2 gap-4">
+        <Field label="Tiêu đề (phần 1)" value={beyond.titleMain} onChange={(v) => onChange({ ...beyond, titleMain: v })} />
+        <Field label="Tiêu đề (phần mờ)" value={beyond.titleEm} onChange={(v) => onChange({ ...beyond, titleEm: v })} />
+      </div>
+      <Field label="Subtitle section" value={beyond.subtitle} textarea onChange={(v) => onChange({ ...beyond, subtitle: v })} />
+
+      <div className="flex items-center justify-between">
+        <h3 className="font-display text-2xl">Khối Leadership (Awakened Leaders)</h3>
+        <button
+          onClick={() => patchLeadership({ hidden: !L.hidden })}
+          className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 text-sm cursor-pointer"
+        >
+          {L.hidden ? <EyeOff size={14} /> : <Eye size={14} />}
+          {L.hidden ? "Đang ẩn" : "Đang hiện"}
+        </button>
+      </div>
+
+      <div className="grid md:grid-cols-2 gap-4">
+        <Field label="Label" value={L.label} onChange={(v) => patchLeadership({ label: v })} />
+        <Field label="Tiêu đề chương trình" value={L.title} onChange={(v) => patchLeadership({ title: v })} />
+        <Field label="Tiêu đề sứ mệnh" value={L.missionTitle} onChange={(v) => patchLeadership({ missionTitle: v })} />
+        <Field label="Tiêu đề vai trò" value={L.rolesTitle} onChange={(v) => patchLeadership({ rolesTitle: v })} />
+      </div>
+      <Field label="Nội dung sứ mệnh" value={L.missionText} textarea onChange={(v) => patchLeadership({ missionText: v })} />
+      <Field
+        label="Vai trò (mỗi dòng 1 pill)"
+        value={L.roles.join("\n")}
+        textarea
+        onChange={(v) =>
+          patchLeadership({
+            roles: v
+              .split("\n")
+              .map((s) => s.trim())
+              .filter(Boolean),
+          })
+        }
+      />
+      <Field label="Tiêu đề danh sách chương trình" value={L.programsTitle} onChange={(v) => patchLeadership({ programsTitle: v })} />
+
+      <div className="grid lg:grid-cols-2 gap-8">
+        <div className="space-y-3">
+          <div className="flex justify-between items-center">
+            <h4 className="font-display text-lg">Chương trình đặc sắc</h4>
+            <button
+              onClick={() => {
+                const item: LeadershipProgramItem = {
+                  id: `prog-${Date.now()}`,
+                  title: `${L.programs.length + 1}. Chương trình mới`,
+                  desc: "Mô tả...",
+                  hidden: false,
+                };
+                patchLeadership({ programs: [...L.programs, item] });
+                setProgId(item.id);
+              }}
+              className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-white text-black text-xs cursor-pointer"
+            >
+              <Plus size={12} /> Thêm
+            </button>
+          </div>
+          {L.programs.map((p, index) => (
+            <div
+              key={p.id}
+              className={cn(
+                "rounded-xl border p-3 flex gap-2 items-start",
+                p.hidden ? "opacity-50 border-white/5" : "border-white/10",
+                progId === p.id && "ring-1 ring-white/40"
+              )}
+            >
+              <div className="flex flex-col gap-0.5">
+                <button
+                  disabled={index === 0}
+                  onClick={() => patchLeadership({ programs: moveItem(L.programs, index, index - 1) })}
+                  className="w-6 h-6 rounded border border-white/10 flex items-center justify-center disabled:opacity-20 cursor-pointer"
+                >
+                  <ChevronUp size={12} />
+                </button>
+                <button
+                  disabled={index === L.programs.length - 1}
+                  onClick={() => patchLeadership({ programs: moveItem(L.programs, index, index + 1) })}
+                  className="w-6 h-6 rounded border border-white/10 flex items-center justify-center disabled:opacity-20 cursor-pointer"
+                >
+                  <ChevronDown size={12} />
+                </button>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-display text-sm truncate">{p.title}</p>
+              </div>
+              <button
+                onClick={() =>
+                  patchLeadership({
+                    programs: L.programs.map((x) => (x.id === p.id ? { ...x, hidden: !x.hidden } : x)),
+                  })
+                }
+                className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center cursor-pointer"
+              >
+                {p.hidden ? <EyeOff size={12} /> : <Eye size={12} />}
+              </button>
+              <button
+                onClick={() => setProgId(p.id)}
+                className="px-2 h-8 rounded-full border border-white/10 text-[10px] cursor-pointer"
+              >
+                Sửa
+              </button>
+              <button
+                onClick={() => {
+                  if (!confirm("Xóa chương trình?")) return;
+                  patchLeadership({ programs: L.programs.filter((x) => x.id !== p.id) });
+                  if (progId === p.id) setProgId(null);
+                }}
+                className="w-8 h-8 rounded-full border border-red-500/30 text-red-300 flex items-center justify-center cursor-pointer"
+              >
+                <Trash2 size={12} />
+              </button>
+            </div>
+          ))}
+          {editingProg && (
+            <div className="space-y-3 border border-white/10 rounded-2xl p-4">
+              <Field
+                label="Tiêu đề"
+                value={editingProg.title}
+                onChange={(v) =>
+                  patchLeadership({
+                    programs: L.programs.map((x) => (x.id === editingProg.id ? { ...x, title: v } : x)),
+                  })
+                }
+              />
+              <Field
+                label="Mô tả"
+                value={editingProg.desc}
+                textarea
+                onChange={(v) =>
+                  patchLeadership({
+                    programs: L.programs.map((x) => (x.id === editingProg.id ? { ...x, desc: v } : x)),
+                  })
+                }
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="space-y-4">
+          <h4 className="font-display text-lg">Gallery ảnh</h4>
+          <Field label="Nhãn gallery" value={L.galleryLabel} onChange={(v) => patchLeadership({ galleryLabel: v })} />
+          <Field label="Folder" value={L.folder} onChange={(v) => patchLeadership({ folder: v })} />
+          <Field
+            label="Max images"
+            value={String(L.maxImages)}
+            onChange={(v) => patchLeadership({ maxImages: Math.max(1, Number(v) || 1) })}
+          />
+          <button
+            onClick={() => patchLeadership({ maxImages: L.maxImages + 1 })}
+            className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/15 text-sm cursor-pointer"
+          >
+            <ImagePlus size={14} /> Thêm slot ảnh
+          </button>
+          <p className="text-xs text-white/40">
+            Ảnh: <code>public/assets/projects/{L.folder}/1.jpg...</code>
+          </p>
+          <ActivityImagePreview folder={L.folder} maxImages={L.maxImages} />
+        </div>
       </div>
     </div>
   );

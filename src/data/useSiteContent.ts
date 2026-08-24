@@ -7,6 +7,26 @@ function deepMergeContent(base: SiteContent, override: Partial<SiteContent>): Si
     projects: override.projects ?? base.projects,
     curatedMoments: { ...base.curatedMoments, ...(override.curatedMoments ?? {}) },
     activities: override.activities ?? base.activities,
+    about: {
+      ...base.about,
+      ...(override.about ?? {}),
+      education: override.about?.education ?? base.about.education,
+      experience: override.about?.experience ?? base.about.experience,
+    },
+    beyondWorkspace: {
+      ...base.beyondWorkspace,
+      ...(override.beyondWorkspace ?? {}),
+      leadership: {
+        ...base.beyondWorkspace.leadership,
+        ...(override.beyondWorkspace?.leadership ?? {}),
+        roles: override.beyondWorkspace?.leadership?.roles ?? base.beyondWorkspace.leadership.roles,
+        programs:
+          override.beyondWorkspace?.leadership?.programs ?? base.beyondWorkspace.leadership.programs,
+        hiddenImages:
+          override.beyondWorkspace?.leadership?.hiddenImages ??
+          base.beyondWorkspace.leadership.hiddenImages,
+      },
+    },
   };
 }
 

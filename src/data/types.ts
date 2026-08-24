@@ -37,11 +37,68 @@ export interface ActivityContent {
   hidden: boolean;
 }
 
+export interface EducationItem {
+  id: string;
+  period: string;
+  institution: string;
+  detail: string;
+  hidden: boolean;
+}
+
+export interface ExperienceItem {
+  id: string;
+  period: string;
+  company: string;
+  description: string;
+  hidden: boolean;
+}
+
+export interface AboutContent {
+  educationTitleMain: string;
+  educationTitleEm: string;
+  education: EducationItem[];
+  experienceTitleMain: string;
+  experienceTitleEm: string;
+  experience: ExperienceItem[];
+}
+
+export interface LeadershipProgramItem {
+  id: string;
+  title: string;
+  desc: string;
+  hidden: boolean;
+}
+
+export interface LeadershipContent {
+  hidden: boolean;
+  label: string;
+  title: string;
+  missionTitle: string;
+  missionText: string;
+  rolesTitle: string;
+  roles: string[];
+  programsTitle: string;
+  programs: LeadershipProgramItem[];
+  galleryLabel: string;
+  folder: string;
+  maxImages: number;
+  hiddenImages: number[];
+}
+
+export interface BeyondWorkspaceContent {
+  titleMain: string;
+  titleEm: string;
+  subtitle: string;
+  leadership: LeadershipContent;
+}
+
 export interface SiteContent {
   projects: ProjectContent[];
   curatedMoments: CuratedMomentsContent;
   activities: ActivityContent[];
+  about: AboutContent;
+  beyondWorkspace: BeyondWorkspaceContent;
 }
 
-export const CONTENT_STORAGE_KEY = "quang_portfolio_content_v1";
+export const CONTENT_STORAGE_KEY = "quang_portfolio_content_v2";
 export const ADMIN_AUTH_KEY = "quang_portfolio_admin_auth";
