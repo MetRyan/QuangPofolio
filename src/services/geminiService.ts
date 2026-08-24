@@ -20,6 +20,7 @@ THÔNG TIN DỰ ÁN (Sắp xếp theo quy mô):
 
 [HỢP TÁC QUỐC TẾ]
 - GreenBio Global Idea Bridge Lab 2025: Project Manager. Hợp tác Việt - Hàn về CNSH xanh & kinh tế tuần hoàn.
+- GreenBio Global Idea Connect Workshop 2026: Project Manager. Workshop tại Daejeon — Day 2 & 3 khám phá ETRI, Smart Farm, Fparma6, KIT; hoàn thiện ý tưởng và chuẩn bị pitching giải pháp GreenBio cho thị trường Việt Nam.
 - Startup Field Trip: Project Manager. Hành trình 72h thực chiến cho sinh viên ĐH ChungNam (Hàn Quốc) tại VN.
 - Startups Meet Finland: Project Manager. Kết nối hệ sinh thái VN - Phần Lan, mở rộng thị trường EU.
 

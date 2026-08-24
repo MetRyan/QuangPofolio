@@ -1,0 +1,195 @@
+import type { SiteContent } from "./types";
+
+export const defaultContent: SiteContent = {
+  projects: [
+    {
+      id: 8,
+      title: "Vietnam Innovation Challenge (ViGen)",
+      subtitle: "NIC x Meta x AI for Vietnam",
+      role: "PROJECT COORDINATOR",
+      category: "Quy mô quốc gia",
+      description:
+        "Xây dựng bộ dữ liệu ngôn ngữ tiếng Việt mở và chất lượng cao để thúc đẩy nghiên cứu, ứng dụng AI tại Việt Nam.",
+      longDescription:
+        "Sáng 1/10 tại NIC (Hòa Lạc), Ngày hội Đổi mới sáng tạo Quốc gia 2025 đã khai mạc với sự hiện diện của lãnh đạo Chính phủ. Điểm nhấn là ViGen – sáng kiến hợp tác giữa NIC, Meta và AI for Vietnam nhằm xây dựng bộ dữ liệu ngôn ngữ tiếng Việt mở và chất lượng cao.\n\nViGen không chỉ là tài nguyên AI mà còn là chiến lược giúp Việt Nam làm chủ công nghệ, đa dạng hóa hệ sinh thái AI nội địa và khẳng định năng lực số quốc gia với khẩu hiệu 'Đưa bản sắc Việt vào AI'. Metat cam kết mở ra các công cụ AI để cộng đồng cùng sáng tạo, trao quyền cho mọi cá nhân để không ai bị bỏ lại phía sau.",
+      location: "NIC Hoa Lac, Hanoi",
+      date: "October 2025",
+      imageUrl: "/assets/projects/innovation_challenge/1.jpg",
+      imageFolder: "innovation_challenge",
+      maxImages: 8,
+      hidden: false,
+    },
+    {
+      id: 4,
+      title: "TECHFEST VIETNAM 2024",
+      subtitle: "Bộ Khoa học và Công nghệ & SVF",
+      role: "PROJECT COORDINATOR",
+      category: "Quy mô quốc gia",
+      description:
+        "Vinh danh Top 3 Cuộc thi Tìm kiếm tài năng Khởi nghiệp Sáng tạo Quốc gia TECHFEST 2024 tại Lễ Khai mạc với sự tham dự của Thủ tướng Chính phủ.",
+      longDescription:
+        "Tại Hải Phòng, Thủ tướng Chính phủ Phạm Minh Chính đã dự Lễ khai mạc TECHFEST 2024 với chủ đề “Chung tay phát triển hệ sinh thái khởi nghiệp sáng tạo Việt Nam”. Top 3 đội thi xuất sắc nhất đã được vinh danh, nhận lãnh trách nhiệm truyền cảm hứng về vai trò của đổi mới sáng tạo trong thời đại mới.",
+      location: "Hai Phong, Vietnam",
+      date: "November 2024",
+      imageUrl: "/assets/projects/techfest2024/1.jpg",
+      imageFolder: "techfest2024",
+      maxImages: 12,
+      hidden: false,
+    },
+    {
+      id: 1,
+      title: "Vietnam Fintech & Regtech Immersion 2026",
+      subtitle: "Australia - Vietnam Financial Immersion",
+      role: "PROJECT MANAGER",
+      category: "Hợp tác Chính phủ (Australia)",
+      description:
+        "Điều phối chuỗi sự kiện tại TP.HCM và Hà Nội, kết nối mạng lưới đối tác chuyên sâu và kiến tạo hạ tầng tài chính hiện đại.",
+      longDescription:
+        "Sự kiện Vietnam Fintech & Regtech Immersion Program 2026 đánh dấu cột mốc quan trọng trong quan hệ hợp tác tài chính Australia - Việt Nam. Chương trình tập trung vào việc định hình tầm nhìn chiến lược và kiến tạo hạ tầng trọng yếu cho Trung tâm Tài chính Quốc tế Việt Nam tại TP.HCM (VIFC-HCMC), đồng thời thúc đẩy đối thoại chính sách và kết nối mạng lưới đối tác chuyên sâu tại Hà Nội.",
+      location: "TP.HCM & Hà Nội, Vietnam",
+      date: "April 2026",
+      imageUrl: "/assets/projects/project1/1.jpg",
+      imageFolder: "project1",
+      maxImages: 17,
+      hidden: false,
+    },
+    {
+      id: 5,
+      title: "Vietnam Market Deep-Dive Series",
+      subtitle: "Austrade Market Entry Insights",
+      role: "PROJECT COORDINATOR",
+      category: "Hợp tác Chính phủ (Australia)",
+      description:
+        "Cung cấp cái nhìn thực tế về thị trường Việt Nam cho doanh nghiệp Australia, thúc đẩy kết nối giao thương bền vững.",
+      longDescription:
+        "Dự án hợp tác với Austrade nhằm cung cấp cái nhìn thực tế về thị trường Việt Nam cho doanh nghiệp Australia. Tôi chịu trách nhiệm điều phối khung hậu cần, chuẩn bị tài liệu sự kiện và đảm bảo sự sẵn sàng cho đại diện Austrade để kiến tạo các kết nối thương mại bền vững giữa hai quốc gia.",
+      location: "Ho Chi Minh City, Vietnam",
+      date: "April - May 2025",
+      imageUrl: "/assets/projects/vietnam_market/1.jpg",
+      imageFolder: "vietnam_market",
+      maxImages: 2,
+      hidden: false,
+    },
+    {
+      id: 2,
+      title: "GreenBio Global Idea Bridge Lab 2025",
+      subtitle: "Vietnam - Korea Bio-Tech Collaboration",
+      role: "PROJECT MANAGER",
+      category: "Hợp tác quốc tế",
+      description:
+        "Chương trình hợp tác quốc tế kéo dài 3 tháng, kết nối sinh viên Việt - Hàn trong các giải pháp công nghệ sinh học xanh và kinh tế tuần hoàn.",
+      longDescription:
+        "Hành trình kéo dài hơn 3 tháng giúp sinh viên Việt Nam - Hàn Quốc cùng nhau giải quyết các thách thức như biến đổi khí hậu và kinh tế tuần hoàn. Pitching & Demo Day đã vinh danh Top 3 dự án xuất sắc nhất: DO YOUR BEST AND PREPARE WELL, BIODA, và AKESIO. Đây là không gian đối thoại học thuật và ứng dụng thực tiễn bền vững.",
+      location: "TP.HCM, Vietnam",
+      date: "Oct 2024 - Jan 2025",
+      imageUrl: "/assets/projects/greenbio/1.jpg",
+      imageFolder: "greenbio",
+      maxImages: 13,
+      hidden: false,
+    },
+    {
+      id: 10,
+      title: "GreenBio Global Idea Connect Workshop 2026",
+      subtitle: "Bứt phá ý tưởng, khám phá công nghệ GreenBio tại Daejeon",
+      role: "PROJECT MANAGER",
+      category: "Hợp tác quốc tế",
+      description:
+        "Hành trình Day 2 & 3 tại Daejeon: khám phá ETRI, Smart Farm, Fparma6 và KIT — chuẩn bị pitching giải pháp GreenBio cho thị trường Việt Nam.",
+      longDescription:
+        "Sau ngày đầu tiên tại Đại học Quốc gia Chungnam (CNU), hành trình “GreenBio Global Idea Connect Workshop 2026” tiếp tục với hai ngày trải nghiệm tại các viện nghiên cứu, mô hình nông nghiệp thông minh và doanh nghiệp GreenBio ở Daejeon.\n\nNếu ngày đầu tiên mở đầu bằng những kiến thức về Sinh học Xanh và nông nghiệp thông minh, thì ngày 2 và 3 là giai đoạn các đội có thêm dữ liệu và trải nghiệm thực tế để tiếp tục phát triển, điều chỉnh và chuẩn bị cho ý tưởng của mình trước phần pitching.\n\nDAY 2 | KHÁM PHÁ CÔNG NGHỆ VÀ HẠ TẦNG GREENBIO\n\nTham quan Viện Nghiên cứu Điện tử và Viễn thông Hàn Quốc (ETRI): ETRI là một viện nghiên cứu do chính phủ Hàn Quốc tài trợ, chuyên về công nghệ thông tin, truyền thông và điện tử. Tại ETRI, sinh viên được tìm hiểu về những công nghệ tiên tiến và các giải pháp công nghệ được phát triển, ứng dụng trong thực tế.\n\nKhám phá Daejeon Farm — Mô hình Smart Farm tại Boramae Park: Ngay gần công viên Boramae, một đường hầm ngầm tưởng như đã bị lãng quên nay lại được tái sinh thành trang trại thông minh hiện đại. Sinh viên được giới thiệu về cách vận hành mô hình nông nghiệp thông minh và các công nghệ liên quan đến tưới cây, cung cấp phân bón và sử dụng ánh sáng nhân tạo.\n\nTìm hiểu về Fparma6 — doanh nghiệp công nghệ sinh học xanh tại Daejeon: Các bạn tiếp tục tìm hiểu về hoạt động của Fparma6, qua đó có thêm góc nhìn về cách các giải pháp và sản phẩm trong lĩnh vực này được phát triển và ứng dụng trong thực tế.\n\nWorkshop hoàn thiện ý tưởng: Sau chuỗi hoạt động tham quan, các đội sinh viên được ghép cặp cùng mentor, tổng hợp insight thu nhận được và nhận phản hồi để tiếp tục hoàn thiện ý tưởng giải quyết cho thị trường Việt Nam.\n\nDAY 3 | TÌM HIỂU QUY TRÌNH NGHIÊN CỨU VÀ KẾT NỐI KINH NGHIỆM HÀN – VIỆT\n\nTham quan Viện Nghiên cứu Độc chất Hàn Quốc (KIT): Trong gần 20 năm, KIT đi đầu trong nghiên cứu về độc tính ở Hàn Quốc và quốc tế. Sinh viên tham gia phiên chia sẻ của các nghiên cứu viên, tham quan cơ sở nghiên cứu và tìm hiểu quy trình nghiên cứu, xử lý và kiểm nghiệm trước khi sản phẩm y tế và sức khỏe được đưa vào sử dụng.\n\nBài giảng chuyên đề “Xu hướng GreenBio và các trường hợp hợp tác Hàn - Việt”: Chương trình mang đến nội dung về xu hướng công nghệ sinh học xanh toàn cầu và các case study hợp tác Hàn – Việt, giúp sinh viên hiểu cách doanh nghiệp Hàn Quốc đưa giải pháp vào Việt Nam và những yếu tố cần cân nhắc khi phát triển giải pháp cho thị trường mới.\n\nWorkshop hoàn thiện ý tưởng — chuẩn bị pitching: Từ kiến thức và trải nghiệm hai ngày, các đội tập trung xây dựng nội dung trình bày. Ngày 14/08/2026, 6 đội trình bày trước 3 chuyên gia đánh giá (10 phút pitch + 5 phút Q&A); 02 đội xuất sắc nhất nhận hỗ trợ tư vấn tiếp nối.",
+      location: "Daejeon, South Korea",
+      date: "August 2026",
+      imageUrl: "/assets/projects/greenbio_connect_2026/1.jpg",
+      imageFolder: "greenbio_connect_2026",
+      maxImages: 20,
+      hidden: false,
+    },
+    {
+      id: 3,
+      title: "Startup Field Trip: Global Mindset - Local Action",
+      subtitle: "ChungNam National University x SVF",
+      role: "PROJECT MANAGER",
+      category: "Hợp tác quốc tế",
+      description:
+        "Hành trình 72 giờ thực chiến giúp sinh viên Hàn - Việt bản địa hóa ý tưởng khởi nghiệp thông qua khảo sát thị trường và kết nối chuyên gia.",
+      longDescription:
+        "Startup Field Trip tập trung vào tư duy 'Global Mindset - Local Action'. Sinh viên Hàn Quốc và Việt Nam đã trải qua 3 chặng: Kích hoạt tư duy chiến lược, Dấn thân vào thị trường thực tế (Field Trip), và Bùng nổ với pitching các mô hình kinh doanh đã được bản địa hóa như Smart Farm, Space Mate, và AI Healthcare.",
+      location: "Ho Chi Minh City, Vietnam",
+      date: "August 2025",
+      imageUrl: "/assets/projects/startup_trip/1.jpg",
+      imageFolder: "startup_trip",
+      maxImages: 8,
+      hidden: false,
+    },
+    {
+      id: 7,
+      title: "Startups Meet Finland",
+      subtitle: "SVF x Business Finland x Business Helsinki",
+      role: "PROJECT MANAGER",
+      category: "Hợp tác quốc tế",
+      description:
+        "Kết nối hệ sinh thái đổi mới sáng tạo Việt Nam - Phần Lan, mở ra cơ hội thâm nhập thị trường Bắc Âu và EU cho các startup Việt.",
+      longDescription:
+        "Startups Meet Finland mở ra không gian gặp gỡ giữa hệ sinh thái khởi nghiệp Việt Nam và Phần Lan. Phiên Private Session - Matching 1:1 đã giúp các startup xuất sắc trực tiếp kết nối cùng Business Finland và các tổ chức hang đầu Bắc Âu để thảo luận chiến lược vươn ra thị trường EU.",
+      location: "Ho Chi Minh City, Vietnam",
+      date: "September 2025",
+      imageUrl: "/assets/projects/finland/1.jpg",
+      imageFolder: "finland",
+      maxImages: 10,
+      hidden: false,
+    },
+    {
+      id: 6,
+      title: "Vietnam-Japan M&A Matching",
+      subtitle: "NIC x SVF x SiteCatcher",
+      role: "PROJECT COORDINATOR",
+      category: "Kết nối đầu tư",
+      description:
+        "Cầu nối chiến lược cho các thương vụ sáp nhập và gọi vốn giữa doanh nghiệp Việt Nam và nhà đầu tư Nhật Bản.",
+      longDescription:
+        "Chương trình được NIC, SVF và SiteCatcher phối hợp tổ chức, thu hút 20 doanh nghiệp Việt và 6 nhà đầu tư Nhật Bản. Dự án tập trung thúc đẩy M&A, mở rộng thị trường và gia tăng hiểu biết song phương thông qua các phiên kết nối trực tiếp và chuyên sâu.",
+      location: "Hanoi, Vietnam",
+      date: "June 20, 2025",
+      imageUrl: "/assets/projects/sitecatcher/1.jpg",
+      imageFolder: "sitecatcher",
+      maxImages: 5,
+      hidden: false,
+    },
+    {
+      id: 9,
+      title: "Lãnh Đạo Tỉnh Thức (Awakened Leaders), CEO Tỉnh Thức & YTP HCM",
+      subtitle: "Volunteer Leadership Programs",
+      role: "CORE TEAM MEMBER",
+      category: "Lãnh đạo cộng đồng",
+      description: "Volunteer leadership programs for the entrepreneurial and business community.",
+      longDescription:
+        "Lãnh Đạo Tỉnh Thức (Awakened Leaders), CEO Tỉnh Thức & YTP HCM là chuỗi chương trình lãnh đạo phụng sự cộng đồng doanh nhân và khởi nghiệp. Dự án đã kiến tạo nhiều hoạt động đào tạo và chuyên đề chuyển hóa sâu sắc nhằm khai phóng tiềm năng của các nhà điều hành:\n\n1. VĂN HÓA DÂN TỘC & DOANH NGHIỆP - STORYTELLING: Buổi chia sẻ đầy cảm hứng từ Thầy Nguyễn Trần Quang với công thức kể chuyện lay động lòng người, truyền lửa về thương hiệu; cùng Thầy Phạm Duy Hiếu - người kể chuyện bằng sự tử tế và nhân văn. Sự kiện đọng lại thông điệp sâu sắc: 'Sống một cuộc đời đáng kể và kể nó bằng tất cả sự chân thành'. Kể về điều mình tin, kể để truyền cảm hứng, kể để kết nối và dẫn dắt.\n\n2. DESIGN YOU – DESIGN YOUR BUSINESS: Hành trình xây dựng bản sắc cá nhân và định hình doanh nghiệp từ chính bạn. Chương trình được thiết kế đặc biệt dành riêng cho Doanh nhân, Chủ doanh nghiệp, Lãnh đạo để thấu suốt bản thân, gỡ bỏ mâu thuẫn để đạt tới 'Tự do nội tâm' - nền tảng cốt lõi của Lãnh đạo Tỉnh thức.\n\n3. TINH HOA LÃNH ĐẠO PHƯƠNG ĐÔNG: Kết nối tinh hoa, minh triết tiền nhân và căn tính dân tộc được gìn giữ qua nhiều thế hệ vào bối cảnh hiện đại. Hành trình mang sứ mệnh lan tỏa lòng tự hào Việt Nam và tinh thần văn hóa dân tộc bền vững tới nhiều vùng đất mới.",
+      location: "TP.HCM & Da Nang, Vietnam",
+      date: "June - July 2026",
+      imageUrl: "/assets/projects/awakened_leaders/1.jpg",
+      imageFolder: "awakened_leaders",
+      maxImages: 20,
+      hidden: true,
+    },
+  ],
+  curatedMoments: {
+    label: "Curated Moments",
+    title: "Khoảnh khắc Đồng hành",
+    folder: "curated_moments",
+    maxImages: 40,
+    hiddenImages: [],
+  },
+  activities: [
+    {
+      id: "retreat-yentu",
+      label: "Hành Trình Về Nguồn & Tu Tập",
+      title: "Thầy Pháp Nhật tại Yên Tử",
+      description:
+        "Nhận thức sâu sắc triết lý 'Tâm lặng mà biết' và bài học 'Trong núi vốn không có Phật' để xây dựng sự kiên định nội tại. Không tìm kiếm giải pháp hay bình an từ các yếu tố bên ngoài, mà quay vào bên trong để làm chủ cảm xúc, giữ sự điềm tĩnh và minh mẫn trước áp lực lớn hay biến động thị trường.",
+      galleryLabel: "Không gian & Khoảnh khắc Tu tập",
+      folder: "retreat",
+      maxImages: 20,
+      hidden: false,
+    },
+  ],
+};

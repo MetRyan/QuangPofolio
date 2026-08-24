@@ -9,7 +9,10 @@ import { ChevronLeft, ChevronRight, ExternalLink, Mail, MapPin } from "lucide-re
 import { cn } from "@/src/lib/utils";
 import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
 import ProjectDetailsPage from "./ProjectDetails";
+import AdminPage from "./Admin";
 import { ChatAssistant } from "./components/ChatAssistant";
+import type { ActivityContent, CuratedMomentsContent, ProjectContent } from "./data/types";
+import { curatedImageList, useSiteContent } from "./data/useSiteContent";
 
 // --- Types ---
 interface Project {
@@ -24,24 +27,8 @@ interface Project {
 
 // --- Components ---
 
-const VoyagerGallery = () => {
-  const defaultImages = [
-    "/assets/projects/finland/6.jpg",
-    "/assets/projects/techfest2024/9.jpg",
-    "/assets/projects/startup_trip/7.jpg",
-    "/assets/projects/awakened_leaders/5.jpg",
-    "/assets/projects/vietnam_market/2.jpg",
-    "/assets/projects/greenbio/3.jpg",
-    "/assets/projects/innovation_challenge/8.jpg",
-    "/assets/projects/sitecatcher/2.jpg",
-    "/assets/projects/finland/3.jpg",
-    "/assets/projects/techfest2024/5.jpg",
-    "/assets/projects/startup_trip/3.jpg",
-    "/assets/projects/awakened_leaders/2.jpg",
-  ];
-
-  // Thêm ảnh: đặt tên theo số thứ tự tiếp theo vào folder curated_moments (tối đa 40)
-  const allImages = Array.from({ length: 40 }, (_, i) => `/assets/projects/curated_moments/${i + 1}.jpg`);
+const VoyagerGallery = ({ curated }: { curated: CuratedMomentsContent }) => {
+  const allImages = curatedImageList(curated.folder, curated.maxImages, curated.hiddenImages);
   const [errorSet, setErrorSet] = useState<Set<number>>(new Set());
   const images = allImages.filter((_, i) => !errorSet.has(i));
 
@@ -59,20 +46,26 @@ const VoyagerGallery = () => {
   }, []);
 
   const handleNext = () => {
+    if (images.length === 0) return;
     setActiveIndex((prev) => (prev + 1) % images.length);
   };
 
   const handlePrev = () => {
+    if (images.length === 0) return;
     setActiveIndex((prev) => (prev - 1 + images.length) % images.length);
   };
 
   useEffect(() => {
-    if (isHovered) return;
+    if (activeIndex >= images.length) setActiveIndex(0);
+  }, [images.length, activeIndex]);
+
+  useEffect(() => {
+    if (isHovered || images.length === 0) return;
     const interval = setInterval(() => {
       handleNext();
     }, 4500);
     return () => clearInterval(interval);
-  }, [isHovered]);
+  }, [isHovered, images.length]);
 
   return (
     <section 
@@ -82,8 +75,8 @@ const VoyagerGallery = () => {
     >
       <div className="max-w-7xl mx-auto px-6 mb-12 flex justify-between items-end">
         <div className="space-y-2 text-left">
-          <span className="text-xs font-mono uppercase tracking-[0.3em] text-white/30">Curated Moments</span>
-          <h3 className="font-display text-2xl md:text-4xl text-white">Khoảnh khắc Đồng hành</h3>
+          <span className="text-xs font-mono uppercase tracking-[0.3em] text-white/30">{curated.label}</span>
+          <h3 className="font-display text-2xl md:text-4xl text-white">{curated.title}</h3>
         </div>
         <div className="flex gap-3">
           <button 
@@ -159,7 +152,7 @@ const VoyagerGallery = () => {
                   className="w-full h-full object-cover select-none pointer-events-none"
                   referrerPolicy="no-referrer"
                   onError={() => {
-                    setErrorSet(prev => new Set(prev).add(allImages.indexOf(imgUrl)));
+                    setErrorSet((prev) => new Set(prev).add(allImages.indexOf(imgUrl)));
                   }}
                 />
                 <div className={cn(
@@ -177,7 +170,7 @@ const VoyagerGallery = () => {
   );
 };
 
-const AwakenedLeadersCard = ({ imgUrl, idx, rot, yOff }: { imgUrl: string; idx: number; rot: number; yOff: number }) => {
+const AwakenedLeadersCard = ({ imgUrl, idx, rot, yOff }: { imgUrl: string; idx: number; rot: number; yOff: number; key?: React.Key }) => {
   const [hidden, setHidden] = useState(false);
   if (hidden) return null;
   return (
@@ -298,7 +291,7 @@ const AwakenedLeadersGallery = () => {
   );
 };
 
-const RetreatCard = ({ imgUrl, idx, rot, yOff }: { imgUrl: string; idx: number; rot: number; yOff: number }) => {
+const RetreatCard = ({ imgUrl, idx, rot, yOff }: { imgUrl: string; idx: number; rot: number; yOff: number; key?: React.Key }) => {
   const [hidden, setHidden] = useState(false);
   if (hidden) return null;
   return (
@@ -310,7 +303,7 @@ const RetreatCard = ({ imgUrl, idx, rot, yOff }: { imgUrl: string; idx: number; 
     >
       <img
         src={imgUrl}
-        alt={`Yên Tử Retreat ${idx + 1}`}
+        alt={`Activity ${idx + 1}`}
         className="w-full h-full object-cover select-none pointer-events-none opacity-85 hover:opacity-100 transition-opacity duration-300"
         referrerPolicy="no-referrer"
         onError={() => setHidden(true)}
@@ -320,22 +313,16 @@ const RetreatCard = ({ imgUrl, idx, rot, yOff }: { imgUrl: string; idx: number; 
   );
 };
 
-const RetreatGallery = () => {
-  const defaultImages = [
-    "/assets/projects/finland/6.jpg",
-    "/assets/projects/finland/3.jpg",
-    "/assets/projects/finland/5.jpg",
-    "/assets/projects/startup_trip/7.jpg",
-    "/assets/projects/startup_trip/3.jpg",
-    "/assets/projects/greenbio/3.jpg",
-    "/assets/projects/greenbio/4.jpg",
-    "/assets/projects/greenbio/7.jpg",
-    "/assets/projects/greenbio/8.jpg",
-    "/assets/projects/finland/8.jpg"
-  ];
-
-  // Thêm ảnh: đặt tên theo số thứ tự tiếp theo vào folder retreat (tối đa 20)
-  const images = Array.from({ length: 20 }, (_, i) => `/assets/projects/retreat/${i + 1}.jpg`);
+const ActivityGallery = ({
+  folder,
+  maxImages,
+  galleryLabel,
+}: {
+  folder: string;
+  maxImages: number;
+  galleryLabel: string;
+}) => {
+  const images = Array.from({ length: maxImages }, (_, i) => `/assets/projects/${folder}/${i + 1}.jpg`);
 
   const containerRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -390,7 +377,7 @@ const RetreatGallery = () => {
       `}</style>
 
       <div className="flex justify-between items-center relative z-10">
-        <h4 className="text-xs font-mono uppercase tracking-widest text-white/40 pl-4">Không gian & Khoảnh khắc Tu tập</h4>
+        <h4 className="text-xs font-mono uppercase tracking-widest text-white/40 pl-4">{galleryLabel}</h4>
         <div className="flex gap-2">
           <button 
             onClick={handlePrev}
@@ -540,18 +527,39 @@ const TiltCard = ({ children, className, image, title }: { children?: React.Reac
   );
 };
 
-const Home = ({ projects }: { projects: Project[] }) => {
+const Home = ({
+  projects,
+  curated,
+  activities,
+}: {
+  projects: Project[];
+  curated: CuratedMomentsContent;
+  activities: ActivityContent[];
+}) => {
   const navigate = useNavigate();
   const [activeProjectIndex, setActiveProjectIndex] = useState(0);
-  const activeProject = projects[activeProjectIndex];
+  const activeProject = projects[activeProjectIndex] ?? projects[0];
 
   // Auto-advance logic: Every 5 seconds
   useEffect(() => {
+    if (projects.length === 0) return;
     const timer = setInterval(() => {
       setActiveProjectIndex((prev) => (prev + 1) % projects.length);
     }, 5000);
     return () => clearInterval(timer);
   }, [activeProjectIndex, projects.length]);
+
+  useEffect(() => {
+    if (activeProjectIndex >= projects.length) setActiveProjectIndex(0);
+  }, [projects.length, activeProjectIndex]);
+
+  if (!activeProject) {
+    return (
+      <div className="relative min-h-screen bg-[hsl(var(--background))] text-white flex items-center justify-center">
+        <p className="text-white/40">Chưa có dự án hiển thị. Vào /admin để thêm.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen bg-[hsl(var(--background))] text-left">
@@ -745,7 +753,7 @@ const Home = ({ projects }: { projects: Project[] }) => {
           </div>
         </section>
 
-        <VoyagerGallery />
+        <VoyagerGallery curated={curated} />
 
         <section id="gallery" className="py-32 bg-black/60 relative overflow-hidden">
           <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -859,21 +867,25 @@ Chạy bộ, Trekking và Flag football không chỉ là thể thao - đó là c
               </div>
             </div>
 
-            {/* Layer 3: Hành Trình Về Nguồn & Tu Tập */}
-            <div className="space-y-16 border-t border-white/5 pt-24 mt-24">
-              <div className="border-l-4 border-white/20 pl-6 space-y-4">
-                <span className="text-xs font-mono uppercase tracking-[0.3em] text-white/40">Hành Trình Về Nguồn & Tu Tập</span>
-                <h3 className="font-display text-3xl md:text-5xl text-white leading-tight">
-                  Thầy Pháp Nhật tại Yên Tử
-                </h3>
-                <p className="text-white/50 text-base max-w-4xl font-light leading-relaxed">
-                  Nhận thức sâu sắc triết lý <span className="text-white font-medium">'Tâm lặng mà biết'</span> và bài học <span className="text-white font-medium">'Trong núi vốn không có Phật'</span> để xây dựng sự kiên định nội tại. Không tìm kiếm giải pháp hay bình an từ các yếu tố bên ngoài, mà quay vào bên trong để làm chủ cảm xúc, giữ sự điềm tĩnh và minh mẫn trước áp lực lớn hay biến động thị trường.
-                </p>
+            {/* Dynamic activities (format: Hành Trình Về Nguồn & Tu Tập) */}
+            {activities.filter((a) => !a.hidden).map((activity) => (
+              <div key={activity.id} className="space-y-16 border-t border-white/5 pt-24 mt-24">
+                <div className="border-l-4 border-white/20 pl-6 space-y-4">
+                  <span className="text-xs font-mono uppercase tracking-[0.3em] text-white/40">{activity.label}</span>
+                  <h3 className="font-display text-3xl md:text-5xl text-white leading-tight">
+                    {activity.title}
+                  </h3>
+                  <p className="text-white/50 text-base max-w-4xl font-light leading-relaxed">
+                    {activity.description}
+                  </p>
+                </div>
+                <ActivityGallery
+                  folder={activity.folder}
+                  maxImages={activity.maxImages}
+                  galleryLabel={activity.galleryLabel}
+                />
               </div>
-
-              {/* Photo Grid for Retreat */}
-              <RetreatGallery />
-            </div>
+            ))}
           </div>
         </section>
 
@@ -917,97 +929,46 @@ Chạy bộ, Trekking và Flag football không chỉ là thể thao - đó là c
 
 export default function App() {
   const [mounted, setMounted] = useState(false);
+  const { content, ready } = useSiteContent();
 
   useEffect(() => {
     setMounted(true);
-    const link = document.createElement('link');
-    link.href = 'https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap';
-    link.rel = 'stylesheet';
+    const link = document.createElement("link");
+    link.href =
+      "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500&display=swap";
+    link.rel = "stylesheet";
     document.head.appendChild(link);
   }, []);
 
-  const projects: Project[] = [
-    {
-      id: 8,
-      title: "Vietnam Innovation Challenge (ViGen)",
-      subtitle: "NIC x Meta x AI for Vietnam",
-      role: "PROJECT COORDINATOR",
-      category: "Quy mô quốc gia",
-      description: "Xây dựng bộ dữ liệu ngôn ngữ tiếng Việt mở và chất lượng cao để thúc đẩy nghiên cứu, ứng dụng AI tại Việt Nam.",
-      imageUrl: "/assets/projects/innovation_challenge/1.jpg"
-    },
-    {
-      id: 4,
-      title: "TECHFEST VIETNAM 2024",
-      subtitle: "Bộ Khoa học và Công nghệ & SVF",
-      role: "PROJECT COORDINATOR",
-      category: "Quy mô quốc gia",
-      description: "Vinh danh Top 3 Cuộc thi Tìm kiếm tài năng Khởi nghiệp Sáng tạo Quốc gia TECHFEST 2024 tại Lễ Khai mạc với sự tham dự của Thủ tướng Chính phủ.",
-      imageUrl: "/assets/projects/techfest2024/1.jpg"
-    },
-    {
-      id: 1,
-      title: "Vietnam Fintech & Regtech Immersion 2026",
-      subtitle: "Australia - Vietnam Financial Immersion",
-      role: "PROJECT MANAGER",
-      category: "Hợp tác Chính phủ (Australia)",
-      description: "Điều phối chuỗi sự kiện tại TP.HCM và Hà Nội, kết nối mạng lưới đối tác chuyên sâu và kiến tạo hạ tầng tài chính hiện đại.",
-      imageUrl: "/assets/projects/project1/1.jpg"
-    },
-    {
-      id: 5,
-      title: "Vietnam Market Deep-Dive Series",
-      subtitle: "Austrade Market Entry Insights",
-      role: "PROJECT COORDINATOR",
-      category: "Hợp tác Chính phủ (Australia)",
-      description: "Cung cấp cái nhìn thực tế về thị trường Việt Nam cho doanh nghiệp Australia, thúc đẩy kết nối giao thương bền vững.",
-      imageUrl: "/assets/projects/vietnam_market/1.jpg"
-    },
-    {
-      id: 2,
-      title: "GreenBio Global Idea Bridge Lab 2025",
-      subtitle: "Vietnam - Korea Bio-Tech Collaboration",
-      role: "PROJECT MANAGER",
-      category: "Hợp tác quốc tế",
-      description: "Chương trình hợp tác quốc tế kéo dài 3 tháng, kết nối sinh viên Việt - Hàn trong các giải pháp công nghệ sinh học xanh và kinh tế tuần hoàn.",
-      imageUrl: "/assets/projects/greenbio/1.jpg"
-    },
-    {
-      id: 3,
-      title: "Startup Field Trip: Global Mindset - Local Action",
-      subtitle: "ChungNam National University x SVF",
-      role: "PROJECT MANAGER",
-      category: "Hợp tác quốc tế",
-      description: "Hành trình 72 giờ thực chiến giúp sinh viên Hàn - Việt bản địa hóa ý tưởng khởi nghiệp thông qua khảo sát thị trường và kết nối chuyên gia.",
-      imageUrl: "/assets/projects/startup_trip/1.jpg"
-    },
-    {
-      id: 7,
-      title: "Startups Meet Finland",
-      subtitle: "SVF x Business Finland x Business Helsinki",
-      role: "PROJECT MANAGER",
-      category: "Hợp tác quốc tế",
-      description: "Kết nối hệ sinh thái đổi mới sáng tạo Việt Nam - Phần Lan, mở ra cơ hội thâm nhập thị trường Bắc Âu và EU cho các startup Việt.",
-      imageUrl: "/assets/projects/finland/1.jpg"
-    },
-    {
-      id: 6,
-      title: "Vietnam-Japan M&A Matching",
-      subtitle: "NIC x SVF x SiteCatcher",
-      role: "PROJECT COORDINATOR",
-      category: "Kết nối đầu tư",
-      description: "Cầu nối chiến lược cho các thương vụ sáp nhập và gọi vốn giữa doanh nghiệp Việt Nam và nhà đầu tư Nhật Bản.",
-      imageUrl: "/assets/projects/sitecatcher/1.jpg"
-    }
-  ];
+  const projects: Project[] = content.projects
+    .filter((p: ProjectContent) => !p.hidden)
+    .map((p: ProjectContent) => ({
+      id: p.id,
+      title: p.title,
+      subtitle: p.subtitle,
+      role: p.role,
+      category: p.category,
+      description: p.description,
+      imageUrl: p.imageUrl,
+    }));
 
-  if (!mounted) return null;
+  if (!mounted || !ready) return null;
 
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Home projects={projects} />} />
+        <Route
+          path="/"
+          element={
+            <Home
+              projects={projects}
+              curated={content.curatedMoments}
+              activities={content.activities}
+            />
+          }
+        />
         <Route path="/project/:id" element={<ProjectDetailsPage />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
       <ChatAssistant />
     </Router>
