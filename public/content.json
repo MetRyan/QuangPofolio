@@ -170,12 +170,32 @@
       "hidden": false
     },
     {
+      "id": "activity-1790615093014",
+      "label": "HÀNH TRÌNH TẠI THƯỢNG HẢI & TÔ CHÂU: HÀNH TRÌNH CHUYỂN HÓA ",
+      "title": "EVOLEAD INNOVATORS  SEASON 3",
+      "description": "MỘT TUẦN ĐÁNG GIÁ TẠI THƯỢNG HẢI & TÔ CHÂU: HÀNH TRÌNH CHUYỂN HÓA VÀ NHỮNG BÀI HỌC \"HIỂU MÌNH, HIỂU NGƯỜI\"  \n- cùng hơn 55 anh chị em lãnh đạo doanh nghiệp trong khuôn khổ Evolead Innovators 2026",
+      "galleryLabel": "EVOLEAD INNVATOR 3",
+      "folder": "EVOLEAD INNVATOR 3",
+      "maxImages": 20,
+      "hidden": false
+    },
+    {
       "id": "activity-1787554097956",
       "label": "HÀNH TRÌNH 4 NGÀY TẠI DAEJEON, HÀN QUỐC",
       "title": "GREENBIO GLOBAL IDEA CONNECT WORKSHOP 2026",
       "description": " Chương trình được đồng tổ chức bởi Liên minh các trường đại học Sinh học Xanh Hàn Quốc (GreenBio COSS Consortium) - bao gồm ĐHQG Seoul, ĐHQG Chungnam, ĐH Kyung Hee, ĐHQG Chonnam, Cao đẳng Yonam, cùng đơn vị Andone (Hàn Quốc) và Quỹ Khởi nghiệp Doanh nghiệp Khoa học và Công nghệ Việt Nam (SVF) tổ chức triển khai chương trình",
       "galleryLabel": "Khoảnh khắc",
       "folder": "HanQuoc",
+      "maxImages": 20,
+      "hidden": false
+    },
+    {
+      "id": "activity-1790616048780",
+      "label": "Chuỗi hoạt động học tập trở thành mentor",
+      "title": "Chương trình Phát triển Mentor Khởi nghiệp Đổi mới Sáng tạo",
+      "description": "Ngày 09/09/2026, chúng tôi đã hoàn thành Chương trình Phát triển Mạng lưới Mentor Khởi nghiệp Đổi mới Sáng tạo 2026, do SIHUB tổ chức. Sau hơn một tháng học tập, thực hành, suy ngẫm và những phiên mentoring",
+      "galleryLabel": "Khoảnh khắc",
+      "folder": "Mentorsihub",
       "maxImages": 20,
       "hidden": false
     }
@@ -193,14 +213,14 @@
       },
       {
         "id": "edu-uci",
-        "period": "Coursera Professional Certificate",
+        "period": "Professional Certificate",
         "institution": "University of California, Irvine",
         "detail": "Project Management Project",
         "hidden": false
       },
       {
         "id": "edu-umich",
-        "period": "Coursera Professional Certificate",
+        "period": "Professional Certificate",
         "institution": "University of Michigan",
         "detail": "Introduction to UX Principles and Processes",
         "hidden": false
