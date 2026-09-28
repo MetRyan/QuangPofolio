@@ -11,6 +11,8 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-route
 import ProjectDetailsPage from "./ProjectDetails";
 import AdminPage from "./Admin";
 import { ChatAssistant } from "./components/ChatAssistant";
+import { LanguageSwitcher } from "./components/LanguageSwitcher";
+import { LanguageProvider, useI18n } from "./i18n/LanguageContext";
 import type {
   ActivityContent,
   BeyondWorkspaceContent,
@@ -34,6 +36,7 @@ interface Project {
 // --- Components ---
 
 const VoyagerGallery = ({ curated }: { curated: CuratedMomentsContent }) => {
+  const { tx } = useI18n();
   const allImages = curatedImageList(curated.folder, curated.maxImages, curated.hiddenImages);
   const [errorSet, setErrorSet] = useState<Set<number>>(new Set());
   const images = allImages.filter((_, i) => !errorSet.has(i));
@@ -555,6 +558,7 @@ const Home = ({
   beyondWorkspace: BeyondWorkspaceContent;
 }) => {
   const navigate = useNavigate();
+  const { t, tx } = useI18n();
   const [activeProjectIndex, setActiveProjectIndex] = useState(0);
   const activeProject = projects[activeProjectIndex] ?? projects[0];
 
@@ -574,7 +578,7 @@ const Home = ({
   if (!activeProject) {
     return (
       <div className="relative min-h-screen bg-[hsl(var(--background))] text-white flex items-center justify-center">
-        <p className="text-white/40">Chưa có dự án hiển thị. Vào /admin để thêm.</p>
+        <p className="text-white/40">{t("projects.empty")}</p>
       </div>
     );
   }
@@ -590,37 +594,42 @@ const Home = ({
       </div>
 
       <div className="relative z-10">
-        <nav className="flex flex-row justify-between items-center px-8 py-6 max-w-7xl mx-auto">
-          <div className="font-display text-3xl tracking-tight text-white flex items-baseline gap-1">
+        <nav className="flex flex-row justify-between items-center px-8 py-6 max-w-7xl mx-auto gap-4">
+          <div className="font-display text-3xl tracking-tight text-white flex items-baseline gap-1 shrink-0">
             Nhật Quang <sup className="text-[10px] font-body opacity-60 tracking-wider">SVF</sup>
           </div>
-          <div className="hidden md:flex items-center gap-10">
+          <div className="hidden lg:flex items-center gap-8">
             {[
-              { label: 'Home', href: '#home' },
-              { label: 'Projects', href: '#projects' },
-              { label: 'Beyond Workspace', href: '#gallery' },
-              { label: 'About', href: '#about' }
+              { label: t("nav.home"), href: "#home" },
+              { label: t("nav.projects"), href: "#projects" },
+              { label: t("nav.beyond"), href: "#gallery" },
+              { label: t("nav.about"), href: "#about" },
             ].map((item) => (
-              <a key={item.label} href={item.href} className="text-sm text-white/50 hover:text-white transition-colors duration-300 tracking-wide">{item.label}</a>
+              <a key={item.href} href={item.href} className="text-sm text-white/50 hover:text-white transition-colors duration-300 tracking-wide">{item.label}</a>
             ))}
-            <a href="/docs/cv.pdf" target="_blank" className="text-xs font-body tracking-[0.2em] uppercase text-white/30 hover:text-white border border-white/10 px-4 py-2 rounded-lg transition-all">Resume PDF</a>
+            <a href="/docs/cv.pdf" target="_blank" className="text-xs font-body tracking-[0.2em] uppercase text-white/30 hover:text-white border border-white/10 px-4 py-2 rounded-lg transition-all">{t("nav.resume")}</a>
           </div>
-          <GlassButton variant="small">Kết Nối</GlassButton>
+          <div className="flex items-center gap-3 shrink-0">
+            <LanguageSwitcher />
+            <GlassButton variant="small" onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}>
+              {t("nav.connect")}
+            </GlassButton>
+          </div>
         </nav>
 
         <section id="home" className="px-6 pt-32 pb-32 max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-[1fr_400px] gap-16 items-start w-full mb-32">
             <div className="text-left space-y-8 pt-8">
               <h1 className="font-display text-5xl sm:text-7xl lg:text-[100px] leading-[0.95] tracking-[-0.03em] font-normal animate-fade-rise">Trần Nhật Quang</h1>
-              <p className="text-white/60 text-lg sm:text-xl max-w-xl leading-relaxed animate-fade-rise-delay">"Là bản thể độc nhất, tôi chọn đầu tư vào sự phát triển cá nhân để tỏa sáng theo cách riêng. Thay vì so sánh, tôi trân trọng hành trình cá nhân và không ngừng hoàn thiện để trở thành phiên bản tốt đẹp nhất của chính mình."</p>
+              <p className="text-white/60 text-lg sm:text-xl max-w-xl leading-relaxed animate-fade-rise-delay">"{t("hero.quote")}"</p>
               <div className="animate-fade-rise-delay-2 pt-4">
-                <GlassButton onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}>Khám phá hành trình</GlassButton>
+                <GlassButton onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}>{t("hero.cta")}</GlassButton>
               </div>
             </div>
             <div className="relative animate-fade-rise-delay-2 group/hero">
               <TiltCard className="aspect-[3/4] w-full max-w-[400px] mx-auto" title="Nhật Quang" image="/assets/avatar.jpg" />
               <div className="absolute -bottom-6 -right-6 liquid-glass p-6 rounded-2xl hidden lg:block backdrop-blur-2xl border border-white/10 shadow-2xl z-30 min-w-[200px]">
-                 <p className="text-[10px] uppercase tracking-widest text-white/40 mb-1">DATE OF BIRTH</p>
+                 <p className="text-[10px] uppercase tracking-widest text-white/40 mb-1">{t("hero.dob")}</p>
                  <p className="text-xl font-display">08/04/2003</p>
               </div>
             </div>
@@ -630,8 +639,8 @@ const Home = ({
               <div className="space-y-12">
                 <div className="animate-fade-rise">
                   <h2 className="font-display text-5xl text-white mb-8">
-                    {about.educationTitleMain}{" "}
-                    <em className="not-italic text-white/40">{about.educationTitleEm}</em>
+                    {tx(about.educationTitleMain) || t("about.educationMain")}{" "}
+                    <em className="not-italic text-white/40">{tx(about.educationTitleEm) || t("about.educationEm")}</em>
                   </h2>
                   <div className="space-y-8">
                     {about.education.filter((e) => !e.hidden).map((item, index) => (
@@ -639,9 +648,9 @@ const Home = ({
                         key={item.id}
                         className={cn("group", index > 0 && "border-t border-white/5 pt-8")}
                       >
-                        <p className="text-xs text-white/30 mb-1 tracking-widest">{item.period}</p>
-                        <h4 className="text-xl font-display text-white">{item.institution}</h4>
-                        <p className="text-white/50 text-sm">{item.detail}</p>
+                        <p className="text-xs text-white/30 mb-1 tracking-widest">{tx(item.period)}</p>
+                        <h4 className="text-xl font-display text-white">{tx(item.institution)}</h4>
+                        <p className="text-white/50 text-sm">{tx(item.detail)}</p>
                       </div>
                     ))}
                   </div>
@@ -650,8 +659,8 @@ const Home = ({
               <div className="space-y-12 animate-fade-rise">
                 <div>
                   <h2 className="font-display text-5xl text-white mb-8">
-                    {about.experienceTitleMain}{" "}
-                    <em className="not-italic text-white/40">{about.experienceTitleEm}</em>
+                    {tx(about.experienceTitleMain) || t("about.experienceMain")}{" "}
+                    <em className="not-italic text-white/40">{tx(about.experienceTitleEm) || t("about.experienceEm")}</em>
                   </h2>
                   <div className="space-y-8">
                     {about.experience.filter((e) => !e.hidden).map((item) => (
@@ -662,9 +671,9 @@ const Home = ({
                         <div className="absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity">
                           <MapPin className="w-12 h-12" />
                         </div>
-                        <p className="text-xs text-white/30 mb-1 tracking-widest">{item.period}</p>
-                        <h4 className="text-2xl font-display text-white">{item.company}</h4>
-                        <p className="text-white/60 mt-4 leading-relaxed">{item.description}</p>
+                        <p className="text-xs text-white/30 mb-1 tracking-widest">{tx(item.period)}</p>
+                        <h4 className="text-2xl font-display text-white">{tx(item.company)}</h4>
+                        <p className="text-white/60 mt-4 leading-relaxed">{tx(item.description)}</p>
                       </div>
                     ))}
                   </div>
@@ -677,10 +686,10 @@ const Home = ({
           <div className="max-w-7xl mx-auto px-6">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-24 gap-8 text-left">
               <div className="space-y-4">
-                <h2 className="font-display text-5xl md:text-7xl text-white">Dự án <em className="not-italic text-white/40">Nổi bật</em></h2>
+                <h2 className="font-display text-5xl md:text-7xl text-white">{t("projects.titleMain")} <em className="not-italic text-white/40">{t("projects.titleEm")}</em></h2>
                 <div className="h-1 w-24 bg-white/20" />
               </div>
-              <p className="text-white/50 max-w-sm text-lg leading-relaxed">Những cột mốc trên hành trình xây dựng hệ sinh thái đổi mới sáng tạo và kết nối tri thức.</p>
+              <p className="text-white/50 max-w-sm text-lg leading-relaxed">{t("projects.intro")}</p>
             </div>
             
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-12 lg:gap-24 items-start">
@@ -709,13 +718,13 @@ const Home = ({
                           "text-[9px] tracking-[0.3em] uppercase mb-1",
                           activeProjectIndex === index ? "text-white/60" : "text-white/20"
                         )}>
-                          {project.category}
+                          {tx(project.category)}
                         </p>
                         <h4 className={cn(
                           "font-display text-lg transition-colors leading-tight",
                           activeProjectIndex === index ? "text-white" : "text-white/40"
                         )}>
-                          {project.title}
+                          {tx(project.title)}
                         </h4>
                       </div>
                     </div>
@@ -755,17 +764,17 @@ const Home = ({
                     <div className="space-y-6 max-w-2xl">
                       <div className="flex items-center gap-4">
                         <span className="text-[10px] font-body tracking-[0.3em] uppercase text-white/40 px-3 py-1 border border-white/10 rounded-full">
-                          {activeProject.role}
+                          {tx(activeProject.role)}
                         </span>
                       </div>
                       <h3 className="font-display text-4xl md:text-5xl text-white leading-[1.1]">
-                        {activeProject.title}
+                        {tx(activeProject.title)}
                       </h3>
                       <p className="text-white/60 text-lg leading-relaxed font-light">
-                        {activeProject.description}
+                        {tx(activeProject.description)}
                       </p>
                       <GlassButton variant="small" onClick={() => navigate(`/project/${activeProject.id}`)}>
-                        Xem chi tiết dự án
+                        {t("projects.viewDetails")}
                       </GlassButton>
                     </div>
                   </motion.div>

@@ -60,7 +60,7 @@ export function setAdminAuthenticated(value: boolean) {
 }
 
 /** Simple personal password — đổi tại đây nếu cần */
-export const ADMIN_PASSWORD = "quang2026";
+export const ADMIN_PASSWORD = "Quang0804@";
 
 export function useSiteContent() {
   const [content, setContent] = useState<SiteContent>(defaultContent);
