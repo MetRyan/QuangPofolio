@@ -160,16 +160,6 @@
   },
   "activities": [
     {
-      "id": "retreat-yentu",
-      "label": "Hành Trình Về Nguồn & Tu Tập",
-      "title": "Thầy Pháp Nhật tại Yên Tử",
-      "description": "Nhận thức sâu sắc triết lý 'Tâm lặng mà biết' và bài học 'Trong núi vốn không có Phật' để xây dựng sự kiên định nội tại. Không tìm kiếm giải pháp hay bình an từ các yếu tố bên ngoài, mà quay vào bên trong để làm chủ cảm xúc, giữ sự điềm tĩnh và minh mẫn trước áp lực lớn hay biến động thị trường.",
-      "galleryLabel": "Không gian & Khoảnh khắc Tu tập",
-      "folder": "retreat",
-      "maxImages": 20,
-      "hidden": false
-    },
-    {
       "id": "activity-1790615093014",
       "label": "HÀNH TRÌNH TẠI THƯỢNG HẢI & TÔ CHÂU: HÀNH TRÌNH CHUYỂN HÓA ",
       "title": "EVOLEAD INNOVATORS  SEASON 3",
@@ -196,6 +186,26 @@
       "description": "Ngày 09/09/2026, chúng tôi đã hoàn thành Chương trình Phát triển Mạng lưới Mentor Khởi nghiệp Đổi mới Sáng tạo 2026, do SIHUB tổ chức. Sau hơn một tháng học tập, thực hành, suy ngẫm và những phiên mentoring",
       "galleryLabel": "Khoảnh khắc",
       "folder": "Mentorsihub",
+      "maxImages": 20,
+      "hidden": false
+    },
+    {
+      "id": "retreat-yentu",
+      "label": "Hành Trình Về Nguồn & Tu Tập",
+      "title": "Thầy Pháp Nhật tại Yên Tử",
+      "description": "Nhận thức sâu sắc triết lý 'Tâm lặng mà biết' và bài học 'Trong núi vốn không có Phật' để xây dựng sự kiên định nội tại. Không tìm kiếm giải pháp hay bình an từ các yếu tố bên ngoài, mà quay vào bên trong để làm chủ cảm xúc, giữ sự điềm tĩnh và minh mẫn trước áp lực lớn hay biến động thị trường.",
+      "galleryLabel": "Không gian & Khoảnh khắc Tu tập",
+      "folder": "retreat",
+      "maxImages": 20,
+      "hidden": false
+    },
+    {
+      "id": "activity-1792073367186",
+      "label": "Vinh dự ngồi ghế Ban Giám khảo",
+      "title": "Cuộc thi \"Khởi nghiệp Nông nghiệp - Smart Agriculture & Digital Transformation\" với sự tham gia 8 trường đại học",
+      "description": "Một ngày làm việc thật nhiều cảm xúc khi được chứng kiến tinh thần nhiệt huyết và những ý tưởng đột phá đến từ 15 team xuất sắc nhất sau nhiều vòng loại. Sự sáng tạo của tuổi trẻ kết hợp cùng công nghệ số chính là chìa khóa để nâng tầm bức tranh nông nghiệp Việt Nam trong tương lai ",
+      "galleryLabel": "DaihocNongLam",
+      "folder": "DaihocNongLam",
       "maxImages": 20,
       "hidden": false
     }
